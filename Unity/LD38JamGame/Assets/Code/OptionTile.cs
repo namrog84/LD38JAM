@@ -1,8 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class OptionTile : MonoBehaviour {
+public class OptionTile : MonoBehaviour, IPointerDownHandler
+{
 
     public int BuildType = TileType.NoBuilding;
 	// Use this for initialization
@@ -14,17 +18,14 @@ public class OptionTile : MonoBehaviour {
 	void Update () {
 		
 	}
-    public void SetOption(int t)
+    public void SetTile()
     {
-        BuildType = t;
+        
         //set prefab to this
     }
 
-    private void OnMouseDown()
+    public void OnPointerDown(PointerEventData eventData)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            GameGod.Instance.OptionClicked(BuildType);
-        }
+        Debug.Log(BuildType);
     }
 }

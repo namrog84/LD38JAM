@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 
-public class BuildTile : MonoBehaviour
-{
+public class BuildTile : MonoBehaviour, IPointerDownHandler {
 
     public int TerrainType;
     public int BuildType;
@@ -32,7 +33,7 @@ public class BuildTile : MonoBehaviour
         BuildType = TileType.NoBuilding;
     }
 
-    private void OnMouseDown()
+    public void OnPointerDown(PointerEventData eventData)
     {
         if (Input.GetMouseButtonDown(0))
         {
