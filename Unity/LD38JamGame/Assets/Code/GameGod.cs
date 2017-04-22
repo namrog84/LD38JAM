@@ -9,28 +9,28 @@ public class GameGod : MonoBehaviour
 
     // Store global variables here
 
-
+    public static List<TileInformation> GameBoard = new List<TileInformation>();
+    private static int CurrentFocusTile; 
     // Merp Derp Eneryg Power!
-    public int currentEnergy;
+    public static int currentEnergy;
 
     // N x 1000s of population?  (1 here means 1000 people?  or 1 million? I dunno)
-    public int currentPopulation;
+    public static int currentPopulation;
 
     // Percentage of 0 to 1 of population happiness
-    public float currentHappiness;
+    public static float currentHappiness;
 
     // Player's current turn
-    public int currentTurn;
+    public static int currentTurn;
     
     // How much water is left for the planet
-    public int currentWaterRemaining;
+    public static int currentWaterRemaining;
 
     // Total amount of water on planet
-    public int totalWorldWaterStart = 150;
-
-
+    public static int totalWorldWaterStart = 150;
 
     private static GameGod _instance = null;
+    private static GameObject _buildSystem;
     public static GameGod Instance
     {
         get
@@ -46,12 +46,42 @@ public class GameGod : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
     }
+    private void Start()
+    {
+        _buildSystem = GameObject.Find("BuildSystem");
+        _buildSystem.SetActive(false);
+        //_buildSystem.SetActive(true);
+        //Debug.Log(_buildSystem);
+    }
+    public static void InitializeTile(GameObject obj, int type)
+    {
+        obj.GetComponent<BuildTile>().InitializeObject(type, GameBoard.Count);
+        GameBoard.Add(new TileInformation(obj));
+       
+    }
 
+    public static void TileClicked(int id)
+    {
+        CurrentFocusTile = id;
+        var obj = GameBoard[id].GameObject;
+        var bm = _buildSystem.GetComponent<BuildManager>();
+        var bt = obj.GetComponent<BuildTile>();
+        bm.MoveBuildSystem(obj);
+        bm.SetBuildOptions(bt.TerrainType, bt.BuildType);
+    }
+
+    public static void OptionClicked(int id)
+    {
+        Debug.Log(string.Format("Building type selected: {0}, time to change tile {1}", Utility.GetTileString(id), CurrentFocusTile));
+    }
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
+
+        
     }
+
 }

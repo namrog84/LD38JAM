@@ -72,6 +72,8 @@ public class TerrainGen : MonoBehaviour
                 var tempObject = Instantiate(miscTerrain[tile]);
                 tempObject.transform.position = new Vector3(tileOffset * i + startOffsetX, tileOffset * j + startOffsetY, 1);
                 tempObject.transform.parent = this.transform;
+                GameGod.InitializeTile(tempObject, tile);
+
             }
         }
     }
