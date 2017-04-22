@@ -6,7 +6,6 @@ using System.Linq;
 
 public class TerrainGen : MonoBehaviour
 {
-
     public GameObject[] miscTerrain;
     // Grass 0
     // Water 1
@@ -62,9 +61,9 @@ public class TerrainGen : MonoBehaviour
 
         worldTiles = new int[horizontalTileCount, verticalTileCount];
 
-        for (int i = 0; i < horizontalTileCount; i++)
+        for (int j = 0; j < verticalTileCount; j++)
         {
-            for (int j = 0; j < verticalTileCount; j++)
+            for (int i = 0; i < horizontalTileCount; i++)
             {
                 var tile = GenerateRandomTile();
                 worldTiles[i, j] = tile;
@@ -72,13 +71,35 @@ public class TerrainGen : MonoBehaviour
                 var tempObject = Instantiate(miscTerrain[tile]);
                 tempObject.transform.position = new Vector3(tileOffset * i + startOffsetX, tileOffset * j + startOffsetY, 1);
                 tempObject.transform.parent = this.transform;
-                GameGod.Instance.InitializeTile(tempObject, tile);
+                InitializeTile(tempObject, tile, i, j);
 
             }
         }
     }
 
+    public void InitializeTile(GameObject obj, int type, int x, int y)
+    {
+        var GameBoard = GameGod.Instance.GameBoard;
+        var tileObject = obj.GetComponent<BuildTile>();
+        var newTileId = GameBoard.Count;
+        tileObject.InitializeObject(type, newTileId);
 
+
+        var tileInfo = new TileInformation(obj);
+
+        tileInfo.NorthId = y + 1 < verticalTileCount ? horizontalTileCount * (y + 1) + x : -1;
+        tileInfo.SouthId = y - 1 >= 0  ? horizontalTileCount * (y - 1) + x : -1;
+
+        tileInfo.EastId = x + 1 < horizontalTileCount ? (horizontalTileCount * y + (x + 1)) : -1;
+        tileInfo.WestId = x - 1 >= 0 ? horizontalTileCount * y + (x - 1) : -1;
+
+
+        //tileInfo.EastId = newTileId + 1;
+        //tileInfo.WestId = newTileId - 1;
+
+        GameBoard.Add(tileInfo);
+
+    }
 
     // Update is called once per frame
     void Update()

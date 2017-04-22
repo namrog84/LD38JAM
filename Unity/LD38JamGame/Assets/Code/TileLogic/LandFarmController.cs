@@ -2,20 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LandFarmController : MonoBehaviour, ITurnInterface
+public class LandFarmController : BasicBuilding
 {
 
-    // Use this for initialization
-    void Start()
+    public override void OnStart()
     {
-        GameGod.Instance.TurnTickables.Add(this);
-    }
-    private void RemoveThis()
-    {
-        GameGod.Instance.TurnTickables.Remove(this);
+        Debug.Log("Land Farm Created");
     }
 
-    // Update is called once per frame
     void Update()
     {
 
@@ -27,7 +21,7 @@ public class LandFarmController : MonoBehaviour, ITurnInterface
         return 10.0f;
     }
 
-    public void EndTurn()
+    public override void EndTurn()
     {
         GameGod.Instance.currentFood += CalculateFoodProduced();
 

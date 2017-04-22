@@ -3,17 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerWater : MonoBehaviour, ITurnInterface
+public class PowerWater : BasicBuilding
 {
 
-    // Use this for initialization
-    void Start()
+    public override void OnStart()
     {
-        GameGod.Instance.TurnTickables.Add(this);
-    }
-    private void RemoveThis()
-    {
-        GameGod.Instance.TurnTickables.Remove(this);
+        Debug.Log("Power Water Created");
     }
 
     // Update is called once per frame
@@ -29,7 +24,7 @@ public class PowerWater : MonoBehaviour, ITurnInterface
 
         return 1.0f;
     }
-    public void EndTurn()
+    public override void EndTurn()
     {
         GameGod.Instance.currentEnergy += CalculateEnergy();
         

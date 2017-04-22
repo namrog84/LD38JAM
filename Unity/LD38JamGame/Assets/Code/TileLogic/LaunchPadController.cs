@@ -2,26 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaunchPadController : MonoBehaviour, ITurnInterface
+public class LaunchPadController : BasicBuilding
 {
 
-    // Use this for initialization
-    void Start()
+    public override void OnStart()
     {
-        GameGod.Instance.TurnTickables.Add(this);
-    }
-    private void RemoveThis()
-    {
-        GameGod.Instance.TurnTickables.Remove(this);
+        Debug.Log("LaunchPad Created");
     }
 
-    // Update is called once per frame
     void Update()
     {
 
     }
 
-    public void EndTurn()
+    public override void EndTurn()
     {
         // if > X Y Z
         // BLAST OFF!

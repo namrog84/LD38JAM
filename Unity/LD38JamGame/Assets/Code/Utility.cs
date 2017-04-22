@@ -34,13 +34,18 @@ public struct TileType
 
 public class TileInformation
 {
-    public GameObject GameObject;
+    public GameObject GroundTileObject;
+    public int NorthId;
+    public int SouthId;
+    public int EastId;
+    public int WestId;
+
     public TileInformation(GameObject g)
     {
-        GameObject = g;
+        GroundTileObject = g;
     }
 
-
+    
 };
 
 public interface ITurnInterface

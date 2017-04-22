@@ -2,27 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParkController : MonoBehaviour, ITurnInterface
+public class ParkController : BasicBuilding
 {
 
-    // Use this for initialization
-    void Start()
+    public override void OnStart()
     {
-        GameGod.Instance.TurnTickables.Add(this);
-    }
-    private void RemoveThis()
-    {
-        GameGod.Instance.TurnTickables.Remove(this);
+        Debug.Log("Park Created");
     }
 
-    // Update is called once per frame
     void Update()
     {
 
     }
 
-
-    public void EndTurn()
+    public override void EndTurn()
     {
 
     }

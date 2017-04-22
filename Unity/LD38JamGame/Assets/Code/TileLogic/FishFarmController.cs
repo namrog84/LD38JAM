@@ -2,23 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FishFarmController : MonoBehaviour, ITurnInterface
+public class FishFarmController : BasicBuilding
 {
-
-    // Use this for initialization
-    void Start()
+    public override void OnStart()
     {
-        GameGod.Instance.TurnTickables.Add(this);
-    }
-    private void RemoveThis()
-    {
-        GameGod.Instance.TurnTickables.Remove(this);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        Debug.Log("FishFarm Created");
     }
 
     private float CalculateFoodProduced()
@@ -26,9 +14,10 @@ public class FishFarmController : MonoBehaviour, ITurnInterface
         return 5.0f;
     }
 
-    public void EndTurn()
+    public override void EndTurn()
     {
         GameGod.Instance.currentFood += CalculateFoodProduced();
 
     }
 }
+

@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaterConserveController : MonoBehaviour, ITurnInterface
+public class WaterConserveController : BasicBuilding
 {
 
-    // Use this for initialization
-    void Start()
+    public override void OnStart()
     {
-        GameGod.Instance.TurnTickables.Add(this);
-    }
-    private void RemoveThis()
-    {
-        GameGod.Instance.TurnTickables.Remove(this);
+        Debug.Log("Water Conserve Created");
     }
 
     // Update is called once per frame
@@ -22,7 +17,7 @@ public class WaterConserveController : MonoBehaviour, ITurnInterface
     }
 
 
-    public void EndTurn()
+    public override void EndTurn()
     {
 
     }
