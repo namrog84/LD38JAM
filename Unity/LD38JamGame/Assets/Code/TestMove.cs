@@ -10,8 +10,10 @@ public class TestMove : MonoBehaviour {
 	}
 
     public float speed = 5.0f;
+
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         var pos = transform.position;
 
         if (Input.GetKey(KeyCode.W))
@@ -37,7 +39,7 @@ public class TestMove : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetComponent<AudioSource>().Play();
+           // GetComponent<AudioSource>().Play();
         }
     }
 }

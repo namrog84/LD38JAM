@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 00a2357ecf0fd5148a5783731829276b
+timeCreated: 1492852122
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Bavaria Extended
+  fontNames:
+  - Bavaria Extended
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
