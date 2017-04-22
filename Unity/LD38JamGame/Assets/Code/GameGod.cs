@@ -85,6 +85,7 @@ public class GameGod : MonoBehaviour
 
     public void OptionClicked(int id)
     {
+
         Debug.Log(string.Format("Building type selected: {0}, time to change tile {1}", Utility.GetTileString(id), CurrentFocusTile));
     }
 

@@ -1,21 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class BuildManager : MonoBehaviour {
 
 
     public List<GameObject> OptionObjects = new List<GameObject>();
-	// Use this for initialization
-	void Start () {
-		
+    // Use this for initialization
+    void Start() {
+
+        var _buildingIds = new List<int>()
+        {
+            TileType.DirtEnergy, TileType.GrassFarm, TileType.Apartment,
+            TileType.WaterFarm, TileType.RecreationPark, TileType.SpacePort,
+            TileType.WaterEnergy, TileType.WaterFarm, TileType.WaterConservation,
+            TileType.Water, TileType.Grass, TileType.Dirt, 
+        };
+        var i = 0;
         foreach (Transform child in transform)
         {
             OptionObjects.Add(child.gameObject);
+            child.gameObject.GetComponent<OptionTile>().BuildType = _buildingIds[i++];
         }
-
         GameGod.Instance._buildSystem = gameObject;
-        gameObject.SetActive(false);
+        gameObject.SetActive(true);
     }
 	
 	// Update is called once per frame
@@ -24,7 +32,8 @@ public class BuildManager : MonoBehaviour {
 	}
     public void MoveBuildSystem(GameObject obj)
     {
-        gameObject.transform.position = obj.transform.position - new Vector3(0, -5f, obj.transform.position.z);
+        var position = Camera.main.WorldToScreenPoint(obj.transform.position + new Vector3(0,4,0));
+        gameObject.GetComponent<RectTransform>().position = position;
         gameObject.SetActive(true);
     }
 
@@ -63,9 +72,11 @@ public class BuildManager : MonoBehaviour {
     }
     public void UpdateOptions(List<int> buildOptions)
     {
-        for (var i = 0; i < buildOptions.Count; i++) 
+       foreach(var obj in OptionObjects)
         {
-            OptionObjects[i].GetComponent<OptionTile>().SetOption(buildOptions[i]);
+            var type = obj.GetComponent<OptionTile>().BuildType;
+            if (buildOptions.Contains(type)) obj.SetActive(true);
+            else obj.SetActive(false);
         }
     }
 }
