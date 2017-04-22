@@ -49,6 +49,7 @@ public class GameGod : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
     }
+
     private void Start()
     {
         referenceCount++;
