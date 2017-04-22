@@ -14,6 +14,10 @@ public class GameGod : MonoBehaviour
     // Merp Derp Eneryg Power!
     public float currentEnergy;
 
+    // Merp Derp Eneryg Power!
+    public float currentFood;
+
+
     // N x 1000s of population?  (1 here means 1000 people?  or 1 million? I dunno)
     public float currentPopulation;
 
@@ -30,6 +34,9 @@ public class GameGod : MonoBehaviour
     public float totalWorldWaterStart = 150;
 
     public GameObject _buildSystem;
+
+    public List<ITurnInterface> TurnTickables = new List<ITurnInterface>();
+
 
 
     private static GameGod _instance = null;
@@ -92,9 +99,18 @@ public class GameGod : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
-
         
+    }
+
+    public void EndTurn()
+    {
+        foreach(var EndTurnObject in TurnTickables)
+        {
+            EndTurnObject.EndTurn();
+        }
+        currentTurn++;
+        Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
+
     }
 
 }

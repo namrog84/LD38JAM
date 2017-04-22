@@ -61,11 +61,17 @@ public class BuildManager : MonoBehaviour {
         }
         UpdateOptions(buildOptions);    
     }
+
     public void UpdateOptions(List<int> buildOptions)
     {
         for (var i = 0; i < buildOptions.Count; i++) 
         {
-            OptionObjects[i].GetComponent<OptionTile>().SetOption(buildOptions[i]);
+            var temp = OptionObjects[i].GetComponent<OptionTile>();
+            if(temp != null)
+            {
+                temp.SetOption(buildOptions[i]);
+            }
+                
         }
     }
 }
