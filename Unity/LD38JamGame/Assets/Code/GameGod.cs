@@ -62,6 +62,7 @@ public class GameGod : MonoBehaviour
 
     public static void TileClicked(int id)
     {
+        if (CurrentFocusTile == id) return;
         CurrentFocusTile = id;
         var obj = GameBoard[id].GameObject;
         var bm = _buildSystem.GetComponent<BuildManager>();
