@@ -9,28 +9,31 @@ public class GameGod : MonoBehaviour
 
     // Store global variables here
 
-    public static List<TileInformation> GameBoard = new List<TileInformation>();
-    private static int CurrentFocusTile; 
+    public List<TileInformation> GameBoard = new List<TileInformation>();
+    private int CurrentFocusTile; 
     // Merp Derp Eneryg Power!
-    public static int currentEnergy;
+    public int currentEnergy;
 
     // N x 1000s of population?  (1 here means 1000 people?  or 1 million? I dunno)
-    public static int currentPopulation;
+    public int currentPopulation;
 
     // Percentage of 0 to 1 of population happiness
-    public static float currentHappiness;
+    public float currentHappiness;
 
     // Player's current turn
-    public static int currentTurn;
+    public int currentTurn;
     
     // How much water is left for the planet
-    public static int currentWaterRemaining;
+    public int currentWaterRemaining;
 
     // Total amount of water on planet
-    public static int totalWorldWaterStart = 150;
+    public int totalWorldWaterStart = 150;
+
+    public GameObject _buildSystem;
 
     private static GameGod _instance = null;
-    private static GameObject _buildSystem;
+    private static int referenceCount;
+
     public static GameGod Instance
     {
         get
@@ -48,19 +51,26 @@ public class GameGod : MonoBehaviour
     }
     private void Start()
     {
-        _buildSystem = GameObject.Find("BuildSystem");
-        _buildSystem.SetActive(false);
+        referenceCount++;
+        if(referenceCount > 1)
+        {
+            //there is only 1 GameGod! Destroy the heathens! 
+            DestroyImmediate(this.gameObject);
+            return;
+        }
+
         //_buildSystem.SetActive(true);
         //Debug.Log(_buildSystem);
     }
-    public static void InitializeTile(GameObject obj, int type)
+
+
+    public void InitializeTile(GameObject obj, int type)
     {
         obj.GetComponent<BuildTile>().InitializeObject(type, GameBoard.Count);
         GameBoard.Add(new TileInformation(obj));
-       
     }
 
-    public static void TileClicked(int id)
+    public void TileClicked(int id)
     {
         if (CurrentFocusTile == id) return;
         CurrentFocusTile = id;
@@ -71,7 +81,7 @@ public class GameGod : MonoBehaviour
         bm.SetBuildOptions(bt.TerrainType, bt.BuildType);
     }
 
-    public static void OptionClicked(int id)
+    public void OptionClicked(int id)
     {
         Debug.Log(string.Format("Building type selected: {0}, time to change tile {1}", Utility.GetTileString(id), CurrentFocusTile));
     }

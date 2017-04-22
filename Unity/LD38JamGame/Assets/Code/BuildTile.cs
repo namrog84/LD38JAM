@@ -28,7 +28,7 @@ public class BuildTile : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0))
         {
-            GameGod.TileClicked(TileId);
+            GameGod.Instance.TileClicked(TileId);
         }
     }
 }

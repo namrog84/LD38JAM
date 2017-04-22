@@ -24,7 +24,7 @@ public class OptionTile : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0))
         {
-            GameGod.OptionClicked(BuildType);
+            GameGod.Instance.OptionClicked(BuildType);
         }
     }
 }

@@ -14,7 +14,9 @@ public class BuildManager : MonoBehaviour {
             OptionObjects.Add(child.gameObject);
         }
 
-	}
+        GameGod.Instance._buildSystem = gameObject;
+        gameObject.SetActive(false);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -25,6 +27,7 @@ public class BuildManager : MonoBehaviour {
         gameObject.transform.position = obj.transform.position - new Vector3(0, -5f, obj.transform.position.z);
         gameObject.SetActive(true);
     }
+
     public void SetBuildOptions(int terrain, int build)
     {
         var buildOptions = new List<int>();
