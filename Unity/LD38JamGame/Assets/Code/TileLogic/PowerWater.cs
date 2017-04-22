@@ -6,16 +6,20 @@ using UnityEngine;
 public class PowerWater : MonoBehaviour, ITurnInterface
 {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    // Use this for initialization
+    void Start()
+    {
+        GameGod.Instance.TurnTickables.Add(this);
+    }
+    private void RemoveThis()
+    {
+        GameGod.Instance.TurnTickables.Remove(this);
+    }
 
+    // Update is called once per frame
+    void Update () {
+		
+	}
 
     public float CalculateEnergy()
     {

@@ -7,11 +7,16 @@ public class PowerLand : MonoBehaviour, ITurnInterface
 
 	// Use this for initialization
 	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        GameGod.Instance.TurnTickables.Add(this);
+    }
+
+    public void RemoveThis()
+    {
+        GameGod.Instance.TurnTickables.Remove(this);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 

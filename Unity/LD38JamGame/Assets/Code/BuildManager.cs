@@ -70,13 +70,16 @@ public class BuildManager : MonoBehaviour {
         }
         UpdateOptions(buildOptions);    
     }
+
     public void UpdateOptions(List<int> buildOptions)
     {
        foreach(var obj in OptionObjects)
         {
+
             var type = obj.GetComponent<OptionTile>().BuildType;
             if (buildOptions.Contains(type)) obj.SetActive(true);
-            else obj.SetActive(false);
+            else obj.SetActive(false);                
+
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParkController : MonoBehaviour, ITurnInterface
+public class FishFarmController : MonoBehaviour, ITurnInterface
 {
 
     // Use this for initialization
@@ -21,10 +21,14 @@ public class ParkController : MonoBehaviour, ITurnInterface
 
     }
 
+    private float CalculateFoodProduced()
+    {
+        return 5.0f;
+    }
 
     public void EndTurn()
     {
+        GameGod.Instance.currentFood += CalculateFoodProduced();
 
     }
-
 }
