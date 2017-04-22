@@ -43,7 +43,7 @@ public class TileInformation
 
 };
 
-public interface TurnInterface
+public interface ITurnInterface
 {
     // called at the end of a turn
     void EndTurn();

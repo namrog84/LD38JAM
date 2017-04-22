@@ -12,10 +12,10 @@ public class GameGod : MonoBehaviour
     public List<TileInformation> GameBoard = new List<TileInformation>();
     private int CurrentFocusTile; 
     // Merp Derp Eneryg Power!
-    public int currentEnergy;
+    public float currentEnergy;
 
     // N x 1000s of population?  (1 here means 1000 people?  or 1 million? I dunno)
-    public int currentPopulation;
+    public float currentPopulation;
 
     // Percentage of 0 to 1 of population happiness
     public float currentHappiness;
@@ -24,12 +24,13 @@ public class GameGod : MonoBehaviour
     public int currentTurn;
     
     // How much water is left for the planet
-    public int currentWaterRemaining;
+    public float currentWaterRemaining;
 
     // Total amount of water on planet
-    public int totalWorldWaterStart = 150;
+    public float totalWorldWaterStart = 150;
 
     public GameObject _buildSystem;
+
 
     private static GameGod _instance = null;
     private static int referenceCount;
