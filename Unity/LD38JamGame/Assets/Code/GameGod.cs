@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameGod : MonoBehaviour
 {
@@ -116,6 +117,11 @@ public class GameGod : MonoBehaviour
         currentTurn++;
         Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
 
+
+        if(currentPopulation <= 0)
+        {
+            SceneManager.LoadScene("GameOverScene");
+        }
     }
 
 }
