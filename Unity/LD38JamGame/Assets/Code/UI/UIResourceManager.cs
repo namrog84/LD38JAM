@@ -21,7 +21,6 @@ public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         //gameObject.GetComponent<Image>().CrossFadeColor(Color.black, .5f, false, true);
         gameObject.GetComponent<Image>().CrossFadeAlpha(0.3f, .3f, true);
-
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -30,10 +29,13 @@ public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerEx
     }
 
     private UIResource _turnUIComponent;
+    public static GameObject CostToolTipObject;
     // Use this for initialization
     private void Awake()
     {
         _turnUIComponent = GameObject.Find("TurnCount").GetComponent<UIResource>();
+        CostToolTipObject = GameObject.Find("CostTooltip");
+        CostToolTipObject.SetActive(false);
     }
     void Start ()
     {

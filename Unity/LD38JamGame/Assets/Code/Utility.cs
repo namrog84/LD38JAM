@@ -40,28 +40,54 @@ public struct TileType
 
     /*any possibility*/
     public const int Apartment = 51;
-
-    //debug utility
-    public static string ToString(int id)
+    public static int GetBuildCost(int id)
     {
         switch (id)
         {
-            case NoBuilding: return "NoBuilding";
-            case Grass: return "Grass";
-            case Dirt: return "Dirt";
-            case Water: return "Water";
+            case NoBuilding: return 0;
+            case Grass: return 10;
+            case Dirt: return 10;
+            case Water: return 10;
 
-            case GrassFarm: return "GrassFarm";
+            case GrassFarm: return 5;
 
-            case WaterConservation: return "WaterConservation";
-            case WaterEnergy: return "WaterEnergy";
-            case WaterFarm: return "WaterFarm";
+            case WaterConservation: return 20;
+            case WaterEnergy: return 5;
+            case WaterFarm: return 4;
 
-            case DirtEnergy: return "DirtEnergy";
+            case DirtEnergy: return 10;
 
-            case RecreationPark: return "RecreationPark";
-            case Apartment: return "Apartment";
-            case SpacePort: return "SpacePort";
+            case RecreationPark: return 5;
+            case Apartment: return 5;
+            case SpacePort: return 100;
+
+            default:
+                throw new System.Exception("Utility>GetBuildCost>InvalidId");
+
+        }
+
+    }
+    //debug utility
+    public static string ToString(int id, bool includeToolTip = false)
+    {
+        switch (id)
+        {
+            case NoBuilding: return string.Format("No Building{0}\nCost: {1} Energy", includeToolTip?"":string.Empty, GetBuildCost(id));
+            case Grass: return string.Format("Grass{0}\nCost: {1} Energy", includeToolTip ? " (Terraform)\n" : string.Empty, GetBuildCost(id));
+            case Dirt: return string.Format("Dirt{0}\nCost: {1} Energy", includeToolTip ? " (Terraform)\n" : string.Empty, GetBuildCost(id));
+            case Water: return string.Format("Water{0}\nCost: {1} Energy", includeToolTip ? " (Terraform)\n" : string.Empty, GetBuildCost(id));
+
+            case GrassFarm: return string.Format("Grass Farm{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
+
+            case WaterConservation: return string.Format("Conservation Facility{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
+            case WaterEnergy: return string.Format("Hydroelectric Facility{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
+            case WaterFarm: return string.Format("Fishing Harbor{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
+
+            case DirtEnergy: return string.Format("DirtEnergy{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
+
+            case RecreationPark: return string.Format("Park & Recreation{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
+            case Apartment: return string.Format("Dwelling{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
+            case SpacePort: return string.Format("Space Port{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
 
             default:
                 return "Not Found";

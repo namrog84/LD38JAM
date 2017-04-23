@@ -17,7 +17,8 @@ public class GameGod : MonoBehaviour
     private static void SetNewGame()
     {
         Instance._currentFocusTile = -1;
-        Instance.currentEnergy = Instance.currentFood = Instance.currentHappiness = Instance.currentTurn = 0;
+        Instance.currentEnergy = 10;
+        Instance.currentFood = Instance.currentHappiness = Instance.currentTurn = 0;
         Instance.currentPopulation = 0;
         Instance.currentWaterRemaining = Instance.totalWorldWaterStart;
         _canvasUI.SetActive(true);
@@ -47,7 +48,7 @@ public class GameGod : MonoBehaviour
     public float currentWaterRemaining;
 
     // Total amount of water on planet
-    public float totalWorldWaterStart = 150;
+    public float totalWorldWaterStart = 100;
 
     
     public List<ITurnInterface> TurnTickables = new List<ITurnInterface>();
