@@ -18,11 +18,6 @@ public class OptionTile : MonoBehaviour, IPointerDownHandler
 	void Update () {
 		
 	}
-    public void SetTile()
-    {
-        
-        //set prefab to this
-    }
 
     public void OnPointerDown(PointerEventData eventData)
     {

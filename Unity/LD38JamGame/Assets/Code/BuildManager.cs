@@ -5,22 +5,18 @@ using UnityEngine.UI;
 public class BuildManager : MonoBehaviour {
 
 
-    public List<GameObject> OptionObjects = new List<GameObject>();
+    private List<GameObject> _options = new List<GameObject>();
+    public GameObject _optionPrefab;
     // Use this for initialization
     void Start() {
-
-        var _buildingIds = new List<int>()
+ 
+        var _buildingIds = TileType.GetIdList();
+        foreach (var id in _buildingIds)
         {
-            TileType.DirtEnergy, TileType.GrassFarm, TileType.Apartment,
-            TileType.WaterFarm, TileType.RecreationPark, TileType.SpacePort,
-            TileType.WaterEnergy, TileType.WaterFarm, TileType.WaterConservation,
-            TileType.Water, TileType.Grass, TileType.Dirt, 
-        };
-        var i = 0;
-        foreach (Transform child in transform)
-        {
-            OptionObjects.Add(child.gameObject);
-            child.gameObject.GetComponent<OptionTile>().BuildType = _buildingIds[i++];
+            var obj = Instantiate(_optionPrefab);
+            obj.GetComponent<OptionTile>().BuildType = id;
+            obj.GetComponent<RectTransform>().SetParent(gameObject.transform);
+            _options.Add(obj);
         }
         GameGod.Instance._buildSystem = gameObject;
         gameObject.SetActive(false);
@@ -34,10 +30,10 @@ public class BuildManager : MonoBehaviour {
     {
         var position = Camera.main.WorldToScreenPoint(obj.transform.position + new Vector3(0,4,0));
         var terrain = obj.GetComponent<BuildTile>().TerrainType;
-        position.x = terrain == TileType.Water ? Mathf.Clamp(position.x, 56, 720): Mathf.Clamp(position.x, 45, 730);
+        position.x =  Mathf.Clamp(position.x, 45, 730);
         position.y = Mathf.Clamp(position.y, 90, 570);
         gameObject.GetComponent<RectTransform>().position = position;
-         gameObject.SetActive(true);
+        gameObject.SetActive(true);
     }
 
     public void SetBuildOptions(int terrain, int build)
@@ -71,18 +67,23 @@ public class BuildManager : MonoBehaviour {
                 Debug.LogError("BuildManager>SetBuildOptions: Invalid Id");
                 break;
         }
+        Debug.Log(buildOptions.Count);
         UpdateOptions(buildOptions);    
     }
 
     public void UpdateOptions(List<int> buildOptions)
     {
-       foreach(var obj in OptionObjects)
-        {
 
+       foreach (var obj in _options)
+       {
             var type = obj.GetComponent<OptionTile>().BuildType;
-            if (buildOptions.Contains(type)) obj.SetActive(true);
-            else obj.SetActive(false);                
+            if (buildOptions.Contains(type))
+            {
+                Debug.LogFormat("setting {0} to active", TileType.ToString(type));
+                obj.SetActive(true);
 
-        }
+            }
+            else obj.SetActive(false);
+       }
     }
 }

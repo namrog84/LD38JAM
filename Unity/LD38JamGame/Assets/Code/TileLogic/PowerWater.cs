@@ -9,7 +9,7 @@ public class PowerWater : BasicBuilding
     public override void OnStart()
     {
         Debug.Log("Power Water Created");
-        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Art/powerWater");
+        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.WaterEnergy];
     }
 
     // Update is called once per frame

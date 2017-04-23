@@ -10,7 +10,7 @@ public class GameGod : MonoBehaviour
     // Store global variables here
 
     public List<TileInformation> GameBoard = new List<TileInformation>();
-
+    public Dictionary<TileType, Sprite> SpriteMap;
 
     private int CurrentFocusTile;
     // Merp Derp Eneryg Power!
@@ -50,7 +50,7 @@ public class GameGod : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = GameObject.FindObjectOfType<GameGod>();
+                _instance = FindObjectOfType<GameGod>();
             }
             return _instance;
         }
@@ -90,7 +90,7 @@ public class GameGod : MonoBehaviour
 
     public void OptionClicked(int id)
     {
-        Debug.Log(string.Format("Building type selected: {0}, time to change tile {1}", Utility.GetTileString(id), CurrentFocusTile));
+        Debug.LogFormat("Building type selected: {0}, time to change tile {1}", TileType.ToString(id), CurrentFocusTile);
         GameBoard[CurrentFocusTile].GroundTileObject.GetComponent<BuildTile>().AddBuilding(id);
     }
 

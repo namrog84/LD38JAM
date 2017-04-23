@@ -30,6 +30,43 @@ public struct TileType
 
     /*any possibility*/
     public const int Apartment = 51;
+
+    //debug utility
+    public static string ToString(int id)
+    {
+        switch (id)
+        {
+            case NoBuilding: return "NoBuilding";
+            case Grass: return "Grass";
+            case Dirt: return "Dirt";
+            case Water: return "Water";
+
+            case GrassFarm: return "GrassFarm";
+
+            case WaterConservation: return "WaterConservation";
+            case WaterEnergy: return "WaterEnergy";
+            case WaterFarm: return "WaterFarm";
+
+            case DirtEnergy: return "DirtEnergy";
+
+            case RecreationPark: return "RecreationPark";
+            case Apartment: return "Apartment";
+            case SpacePort: return "SpacePort";
+
+            default:
+                return "Not Found";
+        };
+    }
+
+    public static List<int> GetIdList()
+    {
+        return new List<int> {
+            RecreationPark, Apartment, SpacePort,
+            DirtEnergy, GrassFarm,
+            WaterEnergy, WaterFarm, WaterConservation,
+            Water, Grass, Dirt };
+    }
+
 };
 
 public class TileInformation
@@ -76,32 +113,7 @@ public class Utility {
             array[j0, j1] = temp;
         }
     }
-    //debug utility
-    public static string GetTileString(int id)
-    {
-        switch (id)
-        {
-            case TileType.NoBuilding: return "NoBuilding";
-            case TileType.Grass: return "Grass";
-            case TileType.Dirt: return "Dirt";
-            case TileType.Water: return "Water";
-
-            case TileType.GrassFarm: return "GrassFarm";
-
-            case TileType.WaterConservation: return "WaterConservation";
-            case TileType.WaterEnergy: return "WaterEnergy";
-            case TileType.WaterFarm: return "WaterFarm";
-
-            case TileType.DirtEnergy: return "DirtEnergy";
-
-            case TileType.RecreationPark: return "RecreationPark";
-            case TileType.Apartment: return "Apartment";
-            case TileType.SpacePort: return "SpacePort";
-
-            default:
-                return "Not Found";
-        };
-    }
+  
 
 
 }

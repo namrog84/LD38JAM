@@ -8,7 +8,7 @@ public class ParkController : BasicBuilding
     public override void OnStart()
     {
         Debug.Log("Park Created");
-        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Art/Recreational");
+        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.RecreationPark];
     }
 
     void Update()
