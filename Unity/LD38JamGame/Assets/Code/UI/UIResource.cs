@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIResource : MonoBehaviour {
+public class UIResource : MonoBehaviour
+{
 
 
     private Text _UItextComponent;
@@ -28,4 +30,5 @@ public class UIResource : MonoBehaviour {
         Value = val;
         _UItextComponent.text = string.Format("{0}: {1}{2}", Field.ToUpper(), Value, IsPercentage?"%":string.Empty);
     }
+
 }

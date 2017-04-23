@@ -7,7 +7,6 @@ public class PowerLandController : BasicBuilding
 
     public override void OnStart()
     {
-        Debug.Log("Power Land Created");
         gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.DirtEnergy];
     }
 

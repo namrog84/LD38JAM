@@ -48,26 +48,22 @@ public class BuildManager : MonoBehaviour {
                 {
                     buildOptions.AddRange(new int[4] { TileType.GrassFarm, TileType.RecreationPark, TileType.Apartment, TileType.SpacePort });
                 }
-                Debug.Log("Grass");
                 break;
             case TileType.Water:
                 if (build == TileType.NoBuilding)
                 {
                     buildOptions.AddRange(new int[4] { TileType.WaterFarm, TileType.WaterConservation, TileType.Apartment, TileType.WaterEnergy });
                 }
-                Debug.Log("Water");
                 break;
             case TileType.Dirt:
                 if (build == TileType.NoBuilding)
                 {
                     buildOptions.AddRange(new int[4] { TileType.DirtEnergy, TileType.RecreationPark, TileType.Apartment, TileType.SpacePort });
-                }
-                Debug.Log("Dirt");
+                }   
                 break;
             default:
                 throw new System.Exception("BuildManager>SetBuildOptions: Invalid Id");
         }
-        Debug.Log(buildOptions.Count);
         UpdateOptions(buildOptions);    
     }
 
@@ -77,12 +73,7 @@ public class BuildManager : MonoBehaviour {
        foreach (var obj in _options)
        {
             var type = obj.GetComponent<OptionTile>().BuildType;
-            if (buildOptions.Contains(type))
-            {
-                Debug.LogFormat("setting {0} to active", TileType.ToString(type));
-                obj.SetActive(true);
-
-            }
+            if (buildOptions.Contains(type)) obj.SetActive(true);
             else obj.SetActive(false);
        }
     }

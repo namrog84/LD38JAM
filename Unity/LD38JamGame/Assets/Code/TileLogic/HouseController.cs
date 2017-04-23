@@ -7,7 +7,6 @@ public class HouseController : BasicBuilding
 
     public override void OnStart()
     {
-        Debug.Log("House Created");
         gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.Apartment];
 
     }

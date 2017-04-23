@@ -7,7 +7,7 @@ public class WaterConserveController : BasicBuilding
 
     public override void OnStart()
     {
-        Debug.Log("Water Conserve Created");
+
         gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.WaterConservation];
     }
 
