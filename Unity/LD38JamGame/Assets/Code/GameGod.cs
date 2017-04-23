@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameGod : MonoBehaviour
 {
@@ -11,14 +12,21 @@ public class GameGod : MonoBehaviour
     // Store global variables here
 
     // ADAM TO DO
-    // scene transition game/over
     // neighbor calculate better now with buildings.
 
-
+    private static void SetNewGame()
+    {
+        Instance._currentFocusTile = -1;
+        Instance.currentEnergy = Instance.currentFood = Instance.currentHappiness = Instance.currentTurn = 0;
+        Instance.currentPopulation = 0;
+        Instance.currentWaterRemaining = Instance.totalWorldWaterStart;
+        _canvasUI.SetActive(true);
+        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();     
+    }
+    private static GameObject _canvasUI;
     public List<TileInformation> GameBoard = new List<TileInformation>();
-    public Dictionary<TileType, Sprite> SpriteMap;
-
-    private int CurrentFocusTile;
+  
+    private int _currentFocusTile;
     // Merp Derp Eneryg Power!
     public float currentEnergy;
 
@@ -41,15 +49,27 @@ public class GameGod : MonoBehaviour
     // Total amount of water on planet
     public float totalWorldWaterStart = 150;
 
-    public GameObject _buildSystem;
-
+    
     public List<ITurnInterface> TurnTickables = new List<ITurnInterface>();
 
+    private static GameObject _uiManager;
+    public void SetUIManager(GameObject g)
+    {
+        if (_uiManager != null) return;
+        _uiManager = g;
+        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
+    }
+
+    private static GameObject _buildSystem;
+    public void SetBuildSystem(GameObject g)
+    {
+        if (_buildSystem != null) return;
+        _buildSystem = g;
+    }
 
 
-    private static GameGod _instance = null;
     private static int referenceCount;
-
+    private static GameGod _instance = null;
     public static GameGod Instance
     {
         get
@@ -64,40 +84,41 @@ public class GameGod : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
+       
     }
 
     private void Start()
     {
         referenceCount++;
+        //only called on singleton
+        if (referenceCount <= 1) _canvasUI = GameObject.Find("Canvas");
+        SetNewGame();  //needed on every call but after the previous assignment
         if (referenceCount > 1)
         {
             //there is only 1 GameGod! Destroy the heathens! 
             DestroyImmediate(this.gameObject);
             return;
         }
-
-        //_buildSystem.SetActive(true);
-        //Debug.Log(_buildSystem);
     }
 
     public void TileClicked(int id)
     {
-        if (CurrentFocusTile == id) return;
+        if (_currentFocusTile == id) return;
 
-        CurrentFocusTile = id;
+        _currentFocusTile = id;
         var tileInfo = GameBoard[id];
         var obj = tileInfo.GroundTileObject;
         var bm = _buildSystem.GetComponent<BuildManager>();
         var bt = obj.GetComponent<BuildTile>();
         bm.MoveBuildSystem(obj);
         bm.SetBuildOptions(bt.TerrainType, bt.BuildType);
-        Debug.LogFormat("Neighbors: {0}, {1}, {2}, {3}", tileInfo.NorthId, tileInfo.SouthId, tileInfo.WestId, tileInfo.EastId);
+        //Debug.LogFormat("Neighbors: {0}, {1}, {2}, {3}", tileInfo.NorthId, tileInfo.SouthId, tileInfo.WestId, tileInfo.EastId);
     }
 
     public void OptionClicked(int id)
     {
-        Debug.LogFormat("Building type selected: {0}, time to change tile {1}", TileType.ToString(id), CurrentFocusTile);
-        GameBoard[CurrentFocusTile].GroundTileObject.GetComponent<BuildTile>().AddBuilding(id);
+        //Debug.LogFormat("Building type selected: {0}, time to change tile {1}", TileType.ToString(id), CurrentFocusTile);
+        GameBoard[_currentFocusTile].GroundTileObject.GetComponent<BuildTile>().AddBuilding(id);
     }
 
     // Update is called once per frame
@@ -110,16 +131,18 @@ public class GameGod : MonoBehaviour
 
     public void EndTurn()
     {
+        Debug.Log("endturn clicked");
         foreach(var EndTurnObject in TurnTickables)
         {
             EndTurnObject.EndTurn();
         }
         currentTurn++;
-        Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
-
+        //Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
+        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
 
         if(currentPopulation <= 0)
         {
+            _canvasUI.SetActive(false);
             SceneManager.LoadScene("GameOverScene");
         }
     }

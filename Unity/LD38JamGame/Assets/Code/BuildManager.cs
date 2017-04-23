@@ -16,9 +16,10 @@ public class BuildManager : MonoBehaviour {
             var obj = Instantiate(_optionPrefab);
             obj.GetComponent<OptionTile>().BuildType = id;
             obj.GetComponent<RectTransform>().SetParent(gameObject.transform);
+            obj.GetComponent<Image>().sprite = AssetManager.SpriteMap[id];
             _options.Add(obj);
         }
-        GameGod.Instance._buildSystem = gameObject;
+        GameGod.Instance.SetBuildSystem(gameObject);
         gameObject.SetActive(false);
     }
 	
@@ -29,7 +30,7 @@ public class BuildManager : MonoBehaviour {
     public void MoveBuildSystem(GameObject obj)
     {
         var position = Camera.main.WorldToScreenPoint(obj.transform.position + new Vector3(0,4,0));
-        var terrain = obj.GetComponent<BuildTile>().TerrainType;
+        //var terrain = obj.GetComponent<BuildTile>().TerrainType;
         position.x =  Mathf.Clamp(position.x, 45, 730);
         position.y = Mathf.Clamp(position.y, 90, 570);
         gameObject.GetComponent<RectTransform>().position = position;
@@ -64,8 +65,7 @@ public class BuildManager : MonoBehaviour {
                 Debug.Log("Dirt");
                 break;
             default:
-                Debug.LogError("BuildManager>SetBuildOptions: Invalid Id");
-                break;
+                throw new System.Exception("BuildManager>SetBuildOptions: Invalid Id");
         }
         Debug.Log(buildOptions.Count);
         UpdateOptions(buildOptions);    
