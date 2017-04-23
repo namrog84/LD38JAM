@@ -16,6 +16,7 @@ public class BuildManager : MonoBehaviour {
             var obj = Instantiate(_optionPrefab);
             obj.GetComponent<OptionTile>().BuildType = id;
             obj.GetComponent<RectTransform>().SetParent(gameObject.transform);
+            obj.GetComponent<Image>().sprite = AssetManager.SpriteMap[id];
             _options.Add(obj);
         }
         GameGod.Instance.SetBuildSystem(gameObject);

@@ -108,12 +108,12 @@ public class GameGod : MonoBehaviour
         var bt = obj.GetComponent<BuildTile>();
         bm.MoveBuildSystem(obj);
         bm.SetBuildOptions(bt.TerrainType, bt.BuildType);
-        Debug.LogFormat("Neighbors: {0}, {1}, {2}, {3}", tileInfo.NorthId, tileInfo.SouthId, tileInfo.WestId, tileInfo.EastId);
+        //Debug.LogFormat("Neighbors: {0}, {1}, {2}, {3}", tileInfo.NorthId, tileInfo.SouthId, tileInfo.WestId, tileInfo.EastId);
     }
 
     public void OptionClicked(int id)
     {
-        Debug.LogFormat("Building type selected: {0}, time to change tile {1}", TileType.ToString(id), CurrentFocusTile);
+        //Debug.LogFormat("Building type selected: {0}, time to change tile {1}", TileType.ToString(id), CurrentFocusTile);
         GameBoard[CurrentFocusTile].GroundTileObject.GetComponent<BuildTile>().AddBuilding(id);
     }
 
@@ -131,10 +131,8 @@ public class GameGod : MonoBehaviour
         {
             EndTurnObject.EndTurn();
         }
-        
         currentTurn++;
-
-        Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
+        //Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
         _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
 
         if(currentPopulation <= 0)

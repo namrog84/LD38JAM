@@ -35,7 +35,6 @@ public class UIResourceManager : MonoBehaviour {
                     _uiComponent.SetText(((int)GameGod.Instance.currentFood).ToString());
                     break;
                 case UIType.Happy:       
-                    //Debug.LogFormat("Current Happiness is {0} and {1} is the number", val, GameGod.Instance.currentHappiness);
                     _uiComponent.SetText(((int)(GameGod.Instance.currentHappiness * 100)).ToString());
                     break;
                 case UIType.People:
