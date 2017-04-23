@@ -8,6 +8,7 @@ public class LaunchPadController : BasicBuilding
     public override void OnStart()
     {
         Debug.Log("LaunchPad Created");
+        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Art/LaunchStation");
     }
 
     void Update()

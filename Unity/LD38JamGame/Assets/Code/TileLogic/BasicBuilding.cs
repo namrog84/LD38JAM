@@ -10,6 +10,7 @@ public class BasicBuilding : MonoBehaviour, ITurnInterface
     public void Start()
     {
         GameGod.Instance.TurnTickables.Add(this);
+        OnStart();
     }
 
     public void RemoveThis()

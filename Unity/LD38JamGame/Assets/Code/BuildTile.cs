@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class BuildTile : MonoBehaviour, IPointerDownHandler {
+public class BuildTile : MonoBehaviour, IPointerDownHandler
+{
 
     public int TerrainType;
     public int BuildType;
@@ -49,13 +50,11 @@ public class BuildTile : MonoBehaviour, IPointerDownHandler {
             DestroyImmediate(gameObject.GetComponent<BasicBuilding>());
         }
 
+        BuildType = buildtype;
         switch (buildtype)
         {
             case TileType.Apartment:
-                if (TerrainType == TileType.Grass)
-                {
-                    building = gameObject.AddComponent<HouseController>();
-                }
+                building = gameObject.AddComponent<HouseController>();
                 break;
             case TileType.RecreationPark:
                 if (TerrainType == TileType.Grass)
@@ -64,9 +63,12 @@ public class BuildTile : MonoBehaviour, IPointerDownHandler {
                 }
                 break;
             case TileType.WaterFarm:
-                building = gameObject.AddComponent<FishFarmController>();
-
+                if (TerrainType == TileType.Water)
+                {
+                    building = gameObject.AddComponent<FishFarmController>();
+                }
                 break;
+
             case TileType.GrassFarm:
                 if (TerrainType == TileType.Grass)
                 {
@@ -74,13 +76,22 @@ public class BuildTile : MonoBehaviour, IPointerDownHandler {
                 }
                 break;
             case TileType.WaterConservation:
-                building = gameObject.AddComponent<WaterConserveController>();
+                if (TerrainType == TileType.Water)
+                {
+                    building = gameObject.AddComponent<WaterConserveController>();
+                }
                 break;
             case TileType.DirtEnergy:
-                building = gameObject.AddComponent<PowerLandController>();
+                if (TerrainType == TileType.Dirt)
+                {
+                    building = gameObject.AddComponent<PowerLandController>();
+                }
                 break;
             case TileType.WaterEnergy:
-                building = gameObject.AddComponent<PowerWater>();
+                if (TerrainType == TileType.Water)
+                {
+                    building = gameObject.AddComponent<PowerWater>();
+                }
                 break;
             case TileType.SpacePort:
                 building = gameObject.AddComponent<LaunchPadController>();

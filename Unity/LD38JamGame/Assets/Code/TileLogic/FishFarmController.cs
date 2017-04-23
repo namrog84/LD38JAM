@@ -7,6 +7,7 @@ public class FishFarmController : BasicBuilding
     public override void OnStart()
     {
         Debug.Log("FishFarm Created");
+        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Art/fishfarm");
     }
 
     private float CalculateFoodProduced()

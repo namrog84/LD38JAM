@@ -27,5 +27,6 @@ public class OptionTile : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log(BuildType);
+        GameGod.Instance.OptionClicked(BuildType);
     }
 }

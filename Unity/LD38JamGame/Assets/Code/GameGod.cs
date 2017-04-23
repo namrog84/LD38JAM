@@ -88,38 +88,16 @@ public class GameGod : MonoBehaviour
         Debug.LogFormat("Neighbors: {0}, {1}, {2}, {3}", tileInfo.NorthId, tileInfo.SouthId, tileInfo.WestId, tileInfo.EastId);
     }
 
-
-
     public void OptionClicked(int id)
     {
-
         Debug.Log(string.Format("Building type selected: {0}, time to change tile {1}", Utility.GetTileString(id), CurrentFocusTile));
+        GameBoard[CurrentFocusTile].GroundTileObject.GetComponent<BuildTile>().AddBuilding(id);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            GameBoard[CurrentFocusTile].GroundTileObject.AddComponent<BuildTile>().AddBuilding(TileType.GrassFarm);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            GameBoard[CurrentFocusTile].GroundTileObject.AddComponent<BuildTile>().AddBuilding(TileType.DirtEnergy);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            GameBoard[CurrentFocusTile].GroundTileObject.AddComponent<BuildTile>().AddBuilding(TileType.Apartment);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            GameBoard[CurrentFocusTile].GroundTileObject.AddComponent<BuildTile>().AddBuilding(TileType.GrassFarm);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            GameBoard[CurrentFocusTile].GroundTileObject.AddComponent<BuildTile>().AddBuilding(TileType.SpacePort);
-        }
-
+  
 
     }
 

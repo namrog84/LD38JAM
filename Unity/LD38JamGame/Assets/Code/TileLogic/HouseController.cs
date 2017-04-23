@@ -8,6 +8,8 @@ public class HouseController : BasicBuilding
     public override void OnStart()
     {
         Debug.Log("House Created");
+        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Art/SimpleHouse");
+
     }
 
     void Update()
