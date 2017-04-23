@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct UIType
+{
+    public const int People = 0;
+    public const int Food = 1;
+    public const int Energy = 2;
+    public const int Happy = 3;
+}
+
 
 public struct TileType
 {

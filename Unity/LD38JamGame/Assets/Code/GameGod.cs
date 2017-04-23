@@ -17,7 +17,7 @@ public class GameGod : MonoBehaviour
 
     public List<TileInformation> GameBoard = new List<TileInformation>();
     public Dictionary<TileType, Sprite> SpriteMap;
-
+    public Dictionary<string, int> test = new Dictionary<string, int>();
     private int CurrentFocusTile;
     // Merp Derp Eneryg Power!
     public float currentEnergy;
@@ -41,14 +41,31 @@ public class GameGod : MonoBehaviour
     // Total amount of water on planet
     public float totalWorldWaterStart = 150;
 
-    public GameObject _buildSystem;
-
+    
     public List<ITurnInterface> TurnTickables = new List<ITurnInterface>();
 
+    private static GameObject _uiManager;
+    public void SetUIManager(GameObject g)
+    {
+        _uiManager = g;
+        _uiManager.GetComponent<UIStatusManager>().UpdateStatus();
+    }
+
+    private static GameObject _buildSystem;
+    public void SetBuildSystem(GameObject g)
+    {
+        _buildSystem = g;
+    }
 
 
     private static GameGod _instance = null;
     private static int referenceCount;
+
+
+
+
+
+
 
     public static GameGod Instance
     {
@@ -114,9 +131,11 @@ public class GameGod : MonoBehaviour
         {
             EndTurnObject.EndTurn();
         }
+        
         currentTurn++;
-        Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
 
+        Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
+        _uiManager.GetComponent<UIStatusManager>().UpdateStatus();
 
         if(currentPopulation <= 0)
         {

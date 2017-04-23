@@ -78,8 +78,7 @@ public class BuildTile : MonoBehaviour, IPointerDownHandler
                 building = gameObject.AddComponent<LaunchPadController>();
                 break;
             default:
-                Debug.LogError("Incorrect Building Type");
-                throw new System.Exception("Incorect Building Type");
+                throw new System.Exception("BuildTile>AddBuilding>Incorrect Building Type");
         }
 
     }
