@@ -8,6 +8,7 @@ public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerEx
 {
 
     private UIResource _turnUIComponent;
+    private UIResource _waterUIComponent;
     public static GameObject CostToolTipObject;
 
     public void OnPointerDown(PointerEventData eventData)
@@ -38,6 +39,7 @@ public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         GameGod.Instance.SetUIManager(gameObject);
         _turnUIComponent = GameObject.Find("TurnCount").GetComponent<UIResource>();
+        _waterUIComponent = GameObject.Find("WaterRemain").GetComponent<UIResource>();
     }
     void Start ()
     {   
@@ -53,6 +55,7 @@ public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void UpdateStatus()
     {
         _turnUIComponent.SetText(GameGod.Instance.currentTurn.ToString());
+        _waterUIComponent.SetText(GameGod.Instance.currentWaterRemaining.ToString());
         foreach (Transform obj in transform)
         {
             var _uiComponent = obj.gameObject.GetComponent<UIResource>();

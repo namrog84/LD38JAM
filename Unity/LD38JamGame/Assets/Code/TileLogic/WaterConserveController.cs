@@ -17,9 +17,8 @@ public class WaterConserveController : BasicBuilding
 
     }
 
-
     public override void EndTurn()
     {
-
+        GameGod.Instance.currentConservationFacilities++;
     }
 }

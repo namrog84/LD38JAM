@@ -20,14 +20,14 @@ public class HouseController : BasicBuilding
     {
         //check neighbors/negatives
         //bonuses etc..
-        return 1.0f;
+        return TileType.GetBaseResourcePerRound(TileType.Apartment);
     }
 
     public float CalculateHouseHappiness()
     {
         //check neighbors/negatives
         //bonuses etc..
-        return 0.01f;
+        return TileType.GetBaseResourcePerRound(TileType.Apartment);
     }
 
     public override void EndTurn()

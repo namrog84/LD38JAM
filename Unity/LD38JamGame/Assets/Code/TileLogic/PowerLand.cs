@@ -14,7 +14,7 @@ public class PowerLandController : BasicBuilding
     {
         //check neighbors/negatives
         //bonuses etc..
-        return 2.0f;
+        return TileType.GetBaseResourcePerRound(TileType.DirtEnergy);
     }
 
     public override void EndTurn()

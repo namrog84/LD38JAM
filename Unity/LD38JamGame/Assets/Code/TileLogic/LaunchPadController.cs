@@ -17,12 +17,6 @@ public class LaunchPadController : BasicBuilding
 
     public override void EndTurn()
     {
-        // if > X Y Z
-        // BLAST OFF!
-    }
-
-    public void BlastOff()
-    {
-
+        GameGod.Instance.currentSpaceShips++;
     }
 }

@@ -14,10 +14,18 @@ public class ParkController : BasicBuilding
     {
 
     }
+    public float CalculateHappiness()
+    {
+        //check neighbors/negatives
+        //bonuses etc..
+
+
+        return TileType.GetBaseResourcePerRound(TileType.RecreationPark);
+    }
 
     public override void EndTurn()
     {
-
+        GameGod.Instance.currentHappiness += CalculateHappiness();
     }
 
 }

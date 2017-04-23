@@ -14,12 +14,16 @@ public class GameGod : MonoBehaviour
     // ADAM TO DO
     // neighbor calculate better now with buildings.
 
+
     private static void SetNewGame()
     {
         Instance._currentFocusTile = -1;
-        Instance.currentEnergy = 10;
-        Instance.currentFood = Instance.currentHappiness = Instance.currentTurn = 0;
-        Instance.currentPopulation = 0;
+        Instance.currentEnergy = 15;
+        Instance.currentHappiness = .50f;
+        Instance.currentFood = 10;
+        Instance.currentTurn = Instance.turnsWithoutFood = Instance.turnsWithoutWater = Instance.currentConservationFacilities = Instance.currentSpaceShips = 0;
+        Instance.currentPopulation = Instance.baseHappinessPerRound = 5;
+        Instance.currentWaterModifier = 1;
         Instance.currentWaterRemaining = Instance.totalWorldWaterStart;
         _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
         _canvasUI.SetActive(true);
@@ -29,29 +33,29 @@ public class GameGod : MonoBehaviour
     public List<TileInformation> GameBoard = new List<TileInformation>();
   
     private int _currentFocusTile = -1;
-    // Merp Derp Eneryg Power!
-    public float currentEnergy;
-
-    // Merp Derp Eneryg Power!
-    public float currentFood;
+    
 
 
-    // N x 1000s of population?  (1 here means 1000 people?  or 1 million? I dunno)
-    public float currentPopulation;
-
-    // Percentage of 0 to 1 of population happiness
-    public float currentHappiness;
-
-    // Player's current turn
-    public int currentTurn;
-
-    // How much water is left for the planet
-    public float currentWaterRemaining;
-
-    // Total amount of water on planet
     public float totalWorldWaterStart = 100;
 
-    
+    public float baseGrowthPerRound;
+    public float baseHappinessPerRound;
+    public float baseEnergyPerRound;
+
+    public int currentTurn;
+    public float currentEnergy;
+    public float currentPopulation;
+    public float currentHappiness;
+    public float currentFood;
+    public float currentWaterRemaining;
+    public float currentWaterModifier;
+    public int currentConservationFacilities;
+    private int turnsWithoutFood = 0;
+    private int turnsWithoutWater = 0;
+
+    public int currentSpaceShips;
+
+
     public List<ITurnInterface> TurnTickables = new List<ITurnInterface>();
 
     private static GameObject _uiManager;
@@ -111,7 +115,6 @@ public class GameGod : MonoBehaviour
         var bm = _buildSystem.GetComponent<BuildManager>();
         var bt = obj.GetComponent<BuildTile>();
         bm.MoveBuildSystem(obj);
-        Debug.LogFormat("this is the buildingtype {0}", TileType.ToString(bt.BuildType));
         bm.SetBuildOptions(bt.TerrainType, bt.BuildType);
         //Debug.LogFormat("Neighbors: {0}, {1}, {2}, {3}", tileInfo.NorthId, tileInfo.SouthId, tileInfo.WestId, tileInfo.EastId);
     }
@@ -119,9 +122,19 @@ public class GameGod : MonoBehaviour
     public void OptionClicked(int id)
     {
         //Debug.LogFormat("Building type selected: {0}, time to change tile {1}", TileType.ToString(id), CurrentFocusTile);
-        GameBoard[_currentFocusTile].GroundTileObject.GetComponent<BuildTile>().AddBuilding(id);
-        _buildSystem.SetActive(false);
-        _currentFocusTile = -1;
+        var cost = TileType.GetBuildCost(id);
+        if (currentEnergy >= cost)
+        {
+            currentEnergy -= cost;
+            _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
+            GameBoard[_currentFocusTile].GroundTileObject.GetComponent<BuildTile>().AddBuilding(id);
+            _buildSystem.SetActive(false);
+            _currentFocusTile = -1;
+        }
+        else
+        {
+            Debug.LogFormat("Insufficient Funds> current energy: {0} || cost: {1}", currentEnergy, cost);
+        }
     }
 
     // Update is called once per frame
@@ -134,11 +147,48 @@ public class GameGod : MonoBehaviour
 
     public void EndTurn()
     {
-        foreach(var EndTurnObject in TurnTickables)
+        currentConservationFacilities = 0;
+        currentSpaceShips = 0;
+        //add tile bonuses
+        foreach (var EndTurnObject in TurnTickables)
         {
             EndTurnObject.EndTurn();
         }
+        //move turn
         currentTurn++;
+
+        //energy restoration
+        currentEnergy += baseEnergyPerRound;
+
+        //water
+        currentWaterRemaining -= (currentPopulation * .1f) * currentWaterModifier;
+        if (currentWaterRemaining < 0) 
+        {
+            currentWaterRemaining = 0;
+            turnsWithoutWater++;
+            if (turnsWithoutWater == 2) currentPopulation *= .50f;
+            if (turnsWithoutWater == 4) currentPopulation = 0;
+            currentHappiness -= Mathf.Pow(.15f, 1 + turnsWithoutWater); 
+        }
+        Debug.LogFormat("water left {0}", currentWaterRemaining);
+
+        //food
+        currentFood -= currentPopulation;
+        if (currentFood < 0)
+        {
+            currentFood = 0;
+            turnsWithoutFood++;
+            currentHappiness -= Mathf.Pow(.02f, 1 + turnsWithoutFood);
+        }
+
+        //overpopulation unhappiness
+        currentHappiness -= currentPopulation - baseHappinessPerRound;
+        if (currentHappiness <= 0) currentEnergy *= .85f;
+        currentHappiness = Mathf.Clamp01(currentHappiness);
+
+        //population increase
+        currentPopulation += currentPopulation * Mathf.Clamp(currentHappiness, .3f, .6f);
+
         //Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
         _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
 

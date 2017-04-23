@@ -40,6 +40,40 @@ public struct TileType
 
     /*any possibility*/
     public const int Apartment = 51;
+
+    public static float GetBaseResourcePerRound(int id)
+    {
+        switch (id)
+        {
+            //nothing
+            case NoBuilding: return 0.0f;
+            case Grass: return 0.0f;
+            case Dirt: return 0.0f;
+            case Water: return 0.0f;
+           
+            //food
+            case GrassFarm: return 7.0f;
+            case WaterFarm: return 5.0f;
+
+            //water conservation
+            case WaterConservation: return .05f;
+
+            //energy
+            case WaterEnergy: return 2.0f;
+            case DirtEnergy: return 10.0f;
+
+            //happiness
+            case RecreationPark: return .02f;
+            case Apartment: return 1.0f;
+            //count
+            case SpacePort: return 1.0f;
+
+            default:
+                throw new System.Exception("Utility>GetBuildCost>InvalidId");
+
+        }
+    }
+
     public static int GetBuildCost(int id)
     {
         switch (id)
@@ -59,7 +93,7 @@ public struct TileType
 
             case RecreationPark: return 5;
             case Apartment: return 5;
-            case SpacePort: return 100;
+            case SpacePort: return 1000;
 
             default:
                 throw new System.Exception("Utility>GetBuildCost>InvalidId");
@@ -70,28 +104,32 @@ public struct TileType
     //debug utility
     public static string ToString(int id, bool includeToolTip = false)
     {
+        var append = string.Format("\nCost: {0} Energy", GetBuildCost(id));
+        var formatString = string.Empty;
         switch (id)
         {
-            case NoBuilding: return string.Format("No Building{0}\nCost: {1} Energy", includeToolTip?"":string.Empty, GetBuildCost(id));
-            case Grass: return string.Format("Grass{0}\nCost: {1} Energy", includeToolTip ? " (Terraform)\n" : string.Empty, GetBuildCost(id));
-            case Dirt: return string.Format("Dirt{0}\nCost: {1} Energy", includeToolTip ? " (Terraform)\n" : string.Empty, GetBuildCost(id));
-            case Water: return string.Format("Water{0}\nCost: {1} Energy", includeToolTip ? " (Terraform)\n" : string.Empty, GetBuildCost(id));
+            case NoBuilding: formatString = "No Building{0}"; break;
 
-            case GrassFarm: return string.Format("Grass Farm{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
+            case Grass: formatString = includeToolTip ? "Remove Building {0}" :"Grass{0}"; break;
+            case Dirt: formatString = includeToolTip ? "Remove Building {0}" : "Dirt{0}" ; break;
+            case Water: formatString = includeToolTip ? "Remove Building {0}" : "Water{0}"; break;
 
-            case WaterConservation: return string.Format("Conservation Facility{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
-            case WaterEnergy: return string.Format("Hydroelectric Facility{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
-            case WaterFarm: return string.Format("Fishing Harbor{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
+            case GrassFarm: formatString = "Grass Farm{0}"; break;
 
-            case DirtEnergy: return string.Format("DirtEnergy{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
+            case WaterConservation: formatString = "Conservation Facility{0}"; break;
+            case WaterEnergy: formatString = "Hydroelectric Facility{0}"; break;
+            case WaterFarm: formatString = "Fishing Harbor{0}"; break;
 
-            case RecreationPark: return string.Format("Park & Recreation{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
-            case Apartment: return string.Format("Dwelling{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
-            case SpacePort: return string.Format("Space Port{0}\nCost: {1} Energy", includeToolTip ? "" : string.Empty, GetBuildCost(id));
+            case DirtEnergy: formatString = "Nuclear Plant{0}"; break;
+
+            case RecreationPark: formatString = "Parks & Recreation{0}"; break;
+            case Apartment: formatString = "Dwelling{0}"; break;
+            case SpacePort: formatString = "Space Port{0}"; break;
 
             default:
                 return "Not Found";
         };
+        return string.Format(formatString, includeToolTip ? append : string.Empty);
     }
 
     public static List<int> GetIdList()

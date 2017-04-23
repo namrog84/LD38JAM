@@ -12,7 +12,7 @@ public class FishFarmController : BasicBuilding
 
     private float CalculateFoodProduced()
     {
-        return 5.0f;
+        return TileType.GetBaseResourcePerRound(TileType.WaterFarm);
     }
 
     public override void EndTurn()
