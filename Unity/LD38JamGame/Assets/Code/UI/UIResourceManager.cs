@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIStatusManager : MonoBehaviour {
+public class UIResourceManager : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-        GameGod.Instance.SetUIManager(gameObject);
-
+    private UIResource _turnUIComponent;
+    // Use this for initialization
+    private void Awake()
+    {
+        _turnUIComponent = GameObject.Find("TurnCount").GetComponent<UIResource>();
+    }
+    void Start ()
+    {
+        GameGod.Instance.SetUIManager(gameObject);     
     }
 	
 	// Update is called once per frame
@@ -17,9 +22,10 @@ public class UIStatusManager : MonoBehaviour {
 
     public void UpdateStatus()
     {
-        foreach(Transform obj in transform)
+        _turnUIComponent.SetText(GameGod.Instance.currentTurn.ToString());
+        foreach (Transform obj in transform)
         {
-            var _uiComponent = obj.gameObject.GetComponent<UIStatus>();
+            var _uiComponent = obj.gameObject.GetComponent<UIResource>();
             switch (_uiComponent.Id)
             {
                 case UIType.Energy:

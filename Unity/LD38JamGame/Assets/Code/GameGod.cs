@@ -48,7 +48,7 @@ public class GameGod : MonoBehaviour
     public void SetUIManager(GameObject g)
     {
         _uiManager = g;
-        _uiManager.GetComponent<UIStatusManager>().UpdateStatus();
+        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
     }
 
     private static GameObject _buildSystem;
@@ -135,7 +135,7 @@ public class GameGod : MonoBehaviour
         currentTurn++;
 
         Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
-        _uiManager.GetComponent<UIStatusManager>().UpdateStatus();
+        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
 
         if(currentPopulation <= 0)
         {

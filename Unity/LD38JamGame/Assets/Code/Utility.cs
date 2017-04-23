@@ -4,10 +4,11 @@ using UnityEngine;
 
 public struct UIType
 {
-    public const int People = 0;
-    public const int Food = 1;
-    public const int Energy = 2;
-    public const int Happy = 3;
+    public const int Turn = 0;
+    public const int People = 1;
+    public const int Food = 2;
+    public const int Energy = 3;
+    public const int Happy = 4;
 }
 
 
