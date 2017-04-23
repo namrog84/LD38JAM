@@ -39,7 +39,13 @@ public class BuildTile : MonoBehaviour, IPointerDownHandler
         if (Input.GetMouseButtonDown(0))
         {
             GameGod.Instance.TileClicked(TileId);
+            Debug.Log(transform.position);
         }
+    }
+    public void PropogatedClick()
+    {
+        GameGod.Instance.TileClicked(TileId);
+        Debug.Log(transform.position);
     }
 
     public void AddBuilding(int buildtype)

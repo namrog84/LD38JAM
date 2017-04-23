@@ -7,7 +7,6 @@ public class LandFarmController : BasicBuilding
 
     public override void OnStart()
     {
-        Debug.Log("Land Farm Created");
         gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.GrassFarm];
     }
 

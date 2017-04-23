@@ -6,7 +6,7 @@ public class FishFarmController : BasicBuilding
 {
     public override void OnStart()
     {
-        Debug.Log("FishFarm Created");
+
         gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.WaterFarm];
     }
 

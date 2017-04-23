@@ -131,7 +131,6 @@ public class GameGod : MonoBehaviour
 
     public void EndTurn()
     {
-        Debug.Log("endturn clicked");
         foreach(var EndTurnObject in TurnTickables)
         {
             EndTurnObject.EndTurn();

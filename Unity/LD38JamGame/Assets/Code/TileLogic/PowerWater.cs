@@ -8,7 +8,6 @@ public class PowerWater : BasicBuilding
 
     public override void OnStart()
     {
-        Debug.Log("Power Water Created");
         gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.WaterEnergy];
     }
 
