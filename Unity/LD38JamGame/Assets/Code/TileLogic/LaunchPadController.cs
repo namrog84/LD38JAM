@@ -7,7 +7,7 @@ public class LaunchPadController : BasicBuilding
 
     public override void OnStart()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.SpacePort];
+       
     }
 
     void Update()

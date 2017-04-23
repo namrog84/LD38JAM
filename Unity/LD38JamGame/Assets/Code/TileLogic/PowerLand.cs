@@ -7,7 +7,7 @@ public class PowerLandController : BasicBuilding
 
     public override void OnStart()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.DirtEnergy];
+      
     }
 
     public float CalculateEnergy()

@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
+
+    private UIResource _turnUIComponent;
+    public static GameObject CostToolTipObject;
+
     public void OnPointerDown(PointerEventData eventData)
     {
         var pos = Camera.main.ScreenToWorldPoint(eventData.pressPosition);
@@ -28,18 +32,17 @@ public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerEx
         gameObject.GetComponent<Image>().CrossFadeAlpha(1f, .3f, true);
     }
 
-    private UIResource _turnUIComponent;
-    public static GameObject CostToolTipObject;
+
     // Use this for initialization
     private void Awake()
     {
+        GameGod.Instance.SetUIManager(gameObject);
         _turnUIComponent = GameObject.Find("TurnCount").GetComponent<UIResource>();
-        CostToolTipObject = GameObject.Find("CostTooltip");
-        CostToolTipObject.SetActive(false);
     }
     void Start ()
-    {
-        GameGod.Instance.SetUIManager(gameObject);     
+    {   
+        CostToolTipObject = GameObject.Find("CostTooltip");
+        CostToolTipObject.SetActive(false);      
     }
 	
 	// Update is called once per frame

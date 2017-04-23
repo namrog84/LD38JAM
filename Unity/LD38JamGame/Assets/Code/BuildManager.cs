@@ -48,11 +48,19 @@ public class BuildManager : MonoBehaviour {
                 {
                     buildOptions.AddRange(new int[4] { TileType.GrassFarm, TileType.RecreationPark, TileType.Apartment, TileType.SpacePort });
                 }
+                else
+                {
+                    buildOptions.Add(TileType.Grass);
+                }
                 break;
             case TileType.Water:
                 if (build == TileType.NoBuilding)
                 {
                     buildOptions.AddRange(new int[4] { TileType.WaterFarm, TileType.WaterConservation, TileType.Apartment, TileType.WaterEnergy });
+                }
+                else
+                {
+                    buildOptions.Add(TileType.Water);
                 }
                 break;
             case TileType.Dirt:
@@ -60,6 +68,10 @@ public class BuildManager : MonoBehaviour {
                 {
                     buildOptions.AddRange(new int[4] { TileType.DirtEnergy, TileType.RecreationPark, TileType.Apartment, TileType.SpacePort });
                 }   
+                else
+                {
+                    buildOptions.Add(TileType.Dirt);
+                }
                 break;
             default:
                 throw new System.Exception("BuildManager>SetBuildOptions: Invalid Id");

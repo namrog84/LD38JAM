@@ -7,7 +7,7 @@ public class ParkController : BasicBuilding
 
     public override void OnStart()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.RecreationPark];
+        
     }
 
     void Update()

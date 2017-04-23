@@ -7,7 +7,7 @@ public class FishFarmController : BasicBuilding
     public override void OnStart()
     {
 
-        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.WaterFarm];
+       
     }
 
     private float CalculateFoodProduced()

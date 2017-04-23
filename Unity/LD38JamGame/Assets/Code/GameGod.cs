@@ -21,13 +21,14 @@ public class GameGod : MonoBehaviour
         Instance.currentFood = Instance.currentHappiness = Instance.currentTurn = 0;
         Instance.currentPopulation = 0;
         Instance.currentWaterRemaining = Instance.totalWorldWaterStart;
+        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
         _canvasUI.SetActive(true);
-        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();     
+
     }
     private static GameObject _canvasUI;
     public List<TileInformation> GameBoard = new List<TileInformation>();
   
-    private int _currentFocusTile;
+    private int _currentFocusTile = -1;
     // Merp Derp Eneryg Power!
     public float currentEnergy;
 
@@ -58,7 +59,6 @@ public class GameGod : MonoBehaviour
     {
         if (_uiManager != null) return;
         _uiManager = g;
-        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
     }
 
     private static GameObject _buildSystem;
@@ -93,7 +93,7 @@ public class GameGod : MonoBehaviour
         referenceCount++;
         //only called on singleton
         if (referenceCount <= 1) _canvasUI = GameObject.Find("Canvas");
-        SetNewGame();  //needed on every call but after the previous assignment
+        SetNewGame();  //needed on every call but after the previous assignment  
         if (referenceCount > 1)
         {
             //there is only 1 GameGod! Destroy the heathens! 
@@ -107,11 +107,11 @@ public class GameGod : MonoBehaviour
         if (_currentFocusTile == id) return;
 
         _currentFocusTile = id;
-        var tileInfo = GameBoard[id];
-        var obj = tileInfo.GroundTileObject;
+        var obj = GameBoard[id].GroundTileObject;
         var bm = _buildSystem.GetComponent<BuildManager>();
         var bt = obj.GetComponent<BuildTile>();
         bm.MoveBuildSystem(obj);
+        Debug.LogFormat("this is the buildingtype {0}", TileType.ToString(bt.BuildType));
         bm.SetBuildOptions(bt.TerrainType, bt.BuildType);
         //Debug.LogFormat("Neighbors: {0}, {1}, {2}, {3}", tileInfo.NorthId, tileInfo.SouthId, tileInfo.WestId, tileInfo.EastId);
     }
@@ -120,6 +120,8 @@ public class GameGod : MonoBehaviour
     {
         //Debug.LogFormat("Building type selected: {0}, time to change tile {1}", TileType.ToString(id), CurrentFocusTile);
         GameBoard[_currentFocusTile].GroundTileObject.GetComponent<BuildTile>().AddBuilding(id);
+        _buildSystem.SetActive(false);
+        _currentFocusTile = -1;
     }
 
     // Update is called once per frame
@@ -143,6 +145,7 @@ public class GameGod : MonoBehaviour
         if(currentPopulation <= 0)
         {
             _canvasUI.SetActive(false);
+            _buildSystem.SetActive(false);
             SceneManager.LoadScene("GameOverScene");
         }
     }

@@ -8,7 +8,7 @@ public class PowerWater : BasicBuilding
 
     public override void OnStart()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.WaterEnergy];
+     
     }
 
     // Update is called once per frame
