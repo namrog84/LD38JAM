@@ -9,6 +9,11 @@ public class GameGod : MonoBehaviour
 
     // Store global variables here
 
+    // ADAM TO DO
+    // scene transition game/over
+    // neighbor calculate better now with buildings.
+
+
     public List<TileInformation> GameBoard = new List<TileInformation>();
     public Dictionary<TileType, Sprite> SpriteMap;
 
