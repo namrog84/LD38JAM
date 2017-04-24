@@ -3,13 +3,30 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | This is the End</title>
+    <title>This is the End</title>
+	<link rel="stylesheet" href="main.css">
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var gameInstance = UnityLoader.instantiate("gameContainer", "Build/Build.json");
+      var gameInstance = UnityLoader.instantiate("gameContainer", "Game/Build.json");
     </script>
   </head>
   <body>
+  <div id="board"></div>
+  <div id="credits">
+    <a href="https://twitter.com/mrspeaker">by Adam Gorman and Jim Bach</a> |
+    <a href="https://ldjam.com/events/ludum-dare/38/derpderp">LD Entry</a> |
+    <a href="https://github.com/namrog84/LD38JAM">source code</a>
+  </div>
     <div id="gameContainer" style="width: 800px; height: 600px; margin: auto"></div>
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-97984026-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
   </body>
 </html>
