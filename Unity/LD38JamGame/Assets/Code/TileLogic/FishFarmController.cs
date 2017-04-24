@@ -6,8 +6,7 @@ public class FishFarmController : BasicBuilding
 {
     public override void OnStart()
     {
-
-       
+        GameGod.Instance.PlaySound(AssetManager.AudioMap[5]);
     }
 
     private float CalculateFoodProduced()

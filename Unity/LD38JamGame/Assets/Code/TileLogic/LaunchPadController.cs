@@ -7,7 +7,7 @@ public class LaunchPadController : BasicBuilding
 
     public override void OnStart()
     {
-       
+        GameGod.Instance.PlaySound(AssetManager.AudioMap[0]);
     }
 
     void Update()

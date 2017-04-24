@@ -8,7 +8,7 @@ public class PowerWater : BasicBuilding
 
     public override void OnStart()
     {
-     
+        GameGod.Instance.PlaySound(AssetManager.AudioMap[6]);
     }
 
     // Update is called once per frame

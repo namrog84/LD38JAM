@@ -275,7 +275,15 @@ public class GameGod : MonoBehaviour
         //yield return null;
     }
 
-  
+    public AudioSource audSrc;
+    public void PlaySound(AudioClip ac, float volScale = 1.0f)
+    {
+        if(audSrc == null)
+        {
+            audSrc = GetComponent<AudioSource>();
+        }
+        audSrc.PlayOneShot(ac, volScale);
+    }
 
 }
 
