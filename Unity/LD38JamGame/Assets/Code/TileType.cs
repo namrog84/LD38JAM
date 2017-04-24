@@ -167,12 +167,12 @@ public class TileType
                 break;
             case WaterFarm:
                 formatString = "Fishing Harbor{0}";
-                description = string.Format("\nIncrease Base Food Production by {0}\nAdjacency Bonus: Food Production", GetBaseResourcePerRound(WaterEnergy));
+                description = string.Format("\nIncrease Base Food Production by {0}\nAdjacency Bonus: Food Production", GetBaseResourcePerRound(WaterFarm));
                 break;
 
             case DirtEnergy:
                 formatString = "Nuclear Plant{0}";
-                description = string.Format("\nIncrease Base Energy Production by {0}\nAdjacency Bonus: Energy Production", GetBaseResourcePerRound(WaterEnergy));
+                description = string.Format("\nIncrease Base Energy Production by {0}\nAdjacency Bonus: Energy Production", GetBaseResourcePerRound(DirtEnergy));
                 break;
 
             case GrassPark:
