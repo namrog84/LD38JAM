@@ -39,7 +39,8 @@ public class AssetManager : MonoBehaviour {
             { 5, Resources.Load<AudioClip>("Sounds/moo") },
             { 6, Resources.Load<AudioClip>("Sounds/buzz") },
             { 7, Resources.Load<AudioClip>("Sounds/bloopx3") },
-            
+            { 8, Resources.Load<AudioClip>("Sounds/Blip_Select21") },
+
 
         };
 
