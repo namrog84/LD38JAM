@@ -7,7 +7,7 @@ public class LandFarmController : BasicBuilding
 
     public override void OnStart()
     {
-       
+        GameGod.Instance.PlaySound(AssetManager.AudioMap[5]);
     }
 
     void Update()

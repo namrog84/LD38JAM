@@ -53,6 +53,7 @@ public class BuildTile : MonoBehaviour, IPointerDownHandler
        
         if (tempExist != null)
         {
+            GameGod.Instance.PlaySound(AssetManager.AudioMap[2]);
             tempExist.RemoveThis();
             DestroyImmediate(gameObject.GetComponent<BasicBuilding>());
         }

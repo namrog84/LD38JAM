@@ -5,7 +5,7 @@ using UnityEngine;
 public class AssetManager : MonoBehaviour {
 
     public static Dictionary<int, Sprite> SpriteMap;
-
+    public static Dictionary<int, AudioClip> AudioMap;
 
     private void Awake()
     {
@@ -28,6 +28,22 @@ public class AssetManager : MonoBehaviour {
         {   TileType.Dirt, Resources.Load<Sprite>("Art/TestDirt")   },
         {   TileType.Grass, Resources.Load<Sprite>("Art/TestGrass")   },
         };
+
+        AudioMap = new Dictionary<int, AudioClip>()
+        {
+            { 0, Resources.Load<AudioClip>("Sounds/blastoff") },
+            { 1, Resources.Load<AudioClip>("Sounds/Blip_Select4") },
+            { 2, Resources.Load<AudioClip>("Sounds/Explosion4") },
+            { 3, Resources.Load<AudioClip>("Sounds/wee") },
+            { 4, Resources.Load<AudioClip>("Sounds/saw") },
+            { 5, Resources.Load<AudioClip>("Sounds/moo") },
+            { 6, Resources.Load<AudioClip>("Sounds/buzz") },
+            { 7, Resources.Load<AudioClip>("Sounds/bloopx3") },
+            { 8, Resources.Load<AudioClip>("Sounds/Blip_Select21") },
+
+
+        };
+
     }
 
     // Use this for initialization

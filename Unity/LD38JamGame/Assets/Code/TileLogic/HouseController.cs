@@ -7,8 +7,7 @@ public class HouseController : BasicBuilding
 
     public override void OnStart()
     {
-      
-
+        GameGod.Instance.PlaySound(AssetManager.AudioMap[4], 0.75f);
     }
 
     void Update()

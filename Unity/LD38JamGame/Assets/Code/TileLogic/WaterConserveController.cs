@@ -7,8 +7,7 @@ public class WaterConserveController : BasicBuilding
 
     public override void OnStart()
     {
-
- 
+        GameGod.Instance.PlaySound(AssetManager.AudioMap[7]);
     }
 
     // Update is called once per frame

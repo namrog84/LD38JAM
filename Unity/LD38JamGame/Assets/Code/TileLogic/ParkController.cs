@@ -7,7 +7,7 @@ public class ParkController : BasicBuilding
 
     public override void OnStart()
     {
-        
+        GameGod.Instance.PlaySound(AssetManager.AudioMap[3]);
     }
 
     void Update()

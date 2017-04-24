@@ -7,7 +7,7 @@ public class PowerLandController : BasicBuilding
 
     public override void OnStart()
     {
-      
+        GameGod.Instance.PlaySound(AssetManager.AudioMap[6]);
     }
 
     public float CalculateEnergy()

@@ -168,9 +168,7 @@ public class GameGod : MonoBehaviour
     void Update()
     {
 
-
     }
-
 
     Button endTurnButton;
     public void EndTurn()
@@ -184,7 +182,7 @@ public class GameGod : MonoBehaviour
         endTurnButton.interactable = false;
 
 
-
+        GameGod.Instance.PlaySound(AssetManager.AudioMap[8]);
         StartCoroutine(FadeFunc());
 
     }
@@ -289,7 +287,15 @@ public class GameGod : MonoBehaviour
         //yield return null;
     }
 
-  
+    public AudioSource audSrc;
+    public void PlaySound(AudioClip ac, float volScale = 1.0f)
+    {
+        if(audSrc == null)
+        {
+            audSrc = GetComponent<AudioSource>();
+        }
+        audSrc.PlayOneShot(ac, volScale);
+    }
 
 }
 
