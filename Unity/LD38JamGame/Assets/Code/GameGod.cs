@@ -17,7 +17,7 @@ public class GameGod : MonoBehaviour
     private static void SetNewGame()
     {
         Instance._currentFocusTile = -1;
-        Instance.currentEnergy = 1500;
+        Instance.currentEnergy = 15;
         Instance.currentHappiness = .50f;
         Instance.currentFood = 10;
         Instance.currentTurn = Instance.turnsWithoutFood = Instance.turnsWithoutWater = Instance.currentConservationFacilities = Instance.currentSpaceShips = 0;

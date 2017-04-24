@@ -154,41 +154,41 @@ public class TileType
 
             case GrassFarm:
                 formatString = "Grass Farm{0}";
-                description = string.Format("\nIncrease Base Food Production by {0}", GetBaseResourcePerRound(GrassFarm));
+                description = string.Format("\nIncrease Base Food Production by {0}\nAdjacency Bonus: Food Production", GetBaseResourcePerRound(GrassFarm));
                 break;
 
             case WaterConservation:
                 formatString = "Conservation Facility{0}";
-                description = string.Format("\nReduce Water Consumption by {0}", GetBaseResourcePerRound(WaterConservation));
+                description = string.Format("\nReduce Water Consumption by {0}\nAdjacency Bonus: None", GetBaseResourcePerRound(WaterConservation));
                 break;
             case WaterEnergy:
                 formatString = "Hydroelectric Facility{0}";
-                description = string.Format("\nIncrease Base Energy Production by {0}", GetBaseResourcePerRound(WaterEnergy));
+                description = string.Format("\nIncrease Base Energy Production by {0}\nAdjacency Bonus: Energy Production", GetBaseResourcePerRound(WaterEnergy));
                 break;
             case WaterFarm:
                 formatString = "Fishing Harbor{0}";
-                description = string.Format("\nIncrease Base Food Production by {0}", GetBaseResourcePerRound(WaterEnergy));
+                description = string.Format("\nIncrease Base Food Production by {0}\nAdjacency Bonus: Food Production", GetBaseResourcePerRound(WaterEnergy));
                 break;
 
             case DirtEnergy:
                 formatString = "Nuclear Plant{0}";
-                description = string.Format("\nIncrease Base Energy Production by {0}", GetBaseResourcePerRound(WaterEnergy));
+                description = string.Format("\nIncrease Base Energy Production by {0}\nAdjacency Bonus: Energy Production", GetBaseResourcePerRound(WaterEnergy));
                 break;
 
             case GrassPark:
             case DirtPark:
                 formatString = "Parks & Recreation{0}";
-                description = string.Format("\nIncrease Happiness by {0} per turn", GetBaseResourcePerRound(GrassPark));
+                description = string.Format("\nIncrease Happiness by {0} per turn\nAdjacency Bonus: None", GetBaseResourcePerRound(GrassPark));
                 break;
             case DirtApartment:
             case GrassApartment:
             case WaterApartment:
                 formatString = "Dwelling{0}";
-                description = string.Format("\nIncrease Happiness by {0} per turn", GetBaseResourcePerRound(GrassApartment));
+                description = string.Format("\nIncrease Happiness by {0} per turn\nAdjacency Bonus: Parks, Farms improve Happiness\nPenalty: Nuclear Plant reduces Happiness", GetBaseResourcePerRound(GrassApartment));
                 break;
             case SpacePort:
                 formatString = "Space Port{0}";
-                description = string.Format("\nWin the Game! Leave the planet!");
+                description = string.Format("\nWin the Game! Leave the planet!\nAdjacency Bonus: None");
                 break;
 
             default:
