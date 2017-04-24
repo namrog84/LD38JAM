@@ -34,9 +34,9 @@ public class OptionTile : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
         var tooltip = UIResourceManager.CostToolTipObject;
-        var position = transform.position + new Vector3(0, 60, 0);
-        if (transform.position.y > 500 && transform.position.y < 600) position += new Vector3(0, -120, 0);
-        position.x = Mathf.Clamp(position.x, 160.0f, 630.0f);
+        var position = transform.position + new Vector3(0, 70, 0);
+        if (transform.position.y > 500 && transform.position.y < 600) position += new Vector3(0, -150, 0);
+        position.x = Mathf.Clamp(position.x, 200.0f, 630.0f);
         if (position.y >= 561.0f)
         {
             position.y = 501.0f;
