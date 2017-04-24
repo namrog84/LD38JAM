@@ -55,7 +55,7 @@ public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void UpdateStatus()
     {
         _turnUIComponent.SetText(GameGod.Instance.currentTurn.ToString());
-        _waterUIComponent.SetText(GameGod.Instance.currentWaterRemaining.ToString());
+        _waterUIComponent.SetText(GameGod.Instance.currentWaterRemaining.ToString("0.0"));
         foreach (Transform obj in transform)
         {
             var _uiComponent = obj.gameObject.GetComponent<UIResource>();
