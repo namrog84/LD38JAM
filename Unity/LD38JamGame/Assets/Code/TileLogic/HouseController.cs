@@ -17,16 +17,7 @@ public class HouseController : BasicBuilding
 
     public float CalculatePopulationGrowth()
     {
-        var _adjacency = GameGod.Instance.GetAdjacencyTiles(_id);
-        var _modifier = 1.0f;
-        foreach (var tile in _adjacency)
-        {
-            if (tile.BuildType == TileType.GrassFarm || tile.BuildType == TileType.WaterFarm)
-            {
-                _modifier += TileType.GetAdjacencyBonusModifier(TileType.GrassApartment);
-            }
-        }
-        return TileType.GetBaseResourcePerRound(TileType.GrassApartment) * _modifier;
+        return TileType.GetBaseResourcePerRound(TileType.GrassApartment) ;
     }
 
     public float CalculateHouseHappiness()
@@ -52,6 +43,8 @@ public class HouseController : BasicBuilding
         GameGod.Instance.currentPopulation += CalculatePopulationGrowth();
 
         GameGod.Instance.currentHappiness += CalculateHouseHappiness();
+
+        GameGod.Instance.currentHousingFacilities++;
 
     }
 }

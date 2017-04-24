@@ -20,7 +20,7 @@ public class GameGod : MonoBehaviour
         Instance.currentEnergy = 15;
         Instance.currentHappiness = .50f;
         Instance.currentFood = 10;
-        Instance.currentTurn = Instance.turnsWithoutFood = Instance.turnsWithoutWater = Instance.currentConservationFacilities = Instance.currentSpaceShips = 0;
+        Instance.currentTurn = Instance.turnsWithoutFood = Instance.turnsWithoutWater = Instance.currentConservationFacilities = Instance.currentSpaceShips = Instance.currentHousingFacilities = 0;
         Instance.currentPopulation = Instance.baseHappinessPerRound = 5;
         Instance.currentWaterModifier = 1;
         Instance.currentWaterRemaining = Instance.totalWorldWaterStart;
@@ -36,7 +36,7 @@ public class GameGod : MonoBehaviour
     public List<ITurnInterface> TurnTickables;
 
     public float totalWorldWaterStart = 100;
-
+    public int populationPerHouse = 50;
     public float baseGrowthPerRound;
     public float baseHappinessPerRound;
     public float baseEnergyPerRound;
@@ -49,6 +49,9 @@ public class GameGod : MonoBehaviour
     public float currentWaterRemaining;
     public float currentWaterModifier;
     public int currentConservationFacilities;
+    public int currentHousingFacilities;
+
+    
     private int turnsWithoutFood = 0;
     private int turnsWithoutWater = 0;
 
@@ -188,16 +191,18 @@ public class GameGod : MonoBehaviour
         endTurnButton.interactable = false;
 
 
-        GameGod.Instance.PlaySound(AssetManager.AudioMap[8]);
+        Instance.PlaySound(AssetManager.AudioMap[8]);
         StartCoroutine(FadeFunc());
 
     }
 
     void ApplyGameRules()
     {
-        Instance.currentConservationFacilities = 0;
-        Instance.currentSpaceShips = 0;
- 
+        _buildSystem.SetActive(false);
+        var _happinessDelta = 0.0f;
+        var _currentPopulationDelta = 0.0f;
+        Instance.currentConservationFacilities = Instance.currentHousingFacilities = Instance.currentSpaceShips = 0;
+        Instance.currentWaterModifier = 1;
         //add tile bonuses
         foreach (var EndTurnObject in Instance.TurnTickables)
         {
@@ -210,33 +215,42 @@ public class GameGod : MonoBehaviour
         //energy restoration
         Instance.currentEnergy += Instance.baseEnergyPerRound;
 
+        Instance.currentWaterModifier *= 1.0f - Instance.currentConservationFacilities * TileType.GetBaseResourcePerRound(TileType.WaterConservation);
+        Debug.LogFormat("modifier is {0}", Instance.currentWaterModifier);
         //water
-        Instance.currentWaterRemaining -= (Instance.currentPopulation * .1f) * Instance.currentWaterModifier;
+        Instance.currentWaterRemaining -= (Instance.currentPopulation * .07f) * Instance.currentWaterModifier;
         if (Instance.currentWaterRemaining < 0)
         {
             Instance.currentWaterRemaining = 0;
             Instance.turnsWithoutWater++;
-            if (Instance.turnsWithoutWater == 2) Instance.currentPopulation *= .50f;
-            if (Instance.turnsWithoutWater == 4) Instance.currentPopulation = 0;
-            Instance.currentHappiness -= Mathf.Pow(.15f, 1 + Instance.turnsWithoutWater);
+            if (Instance.turnsWithoutWater >= 2) _currentPopulationDelta *= .50f;
+            if (Instance.turnsWithoutWater == 4) _currentPopulationDelta = 0;
+            _happinessDelta -= Mathf.Pow(.15f, 1 + Instance.turnsWithoutWater);
         }
+        if (Instance.currentFood > Instance.currentPopulation * 2) _currentPopulationDelta *= 1.5f;
 
         //food
         Instance.currentFood -= Instance.currentPopulation;
+        
         if (Instance.currentFood < 0)
         {
             Instance.currentFood = 0;
             Instance.turnsWithoutFood++;
-            Instance.currentHappiness -= .05f * (1 + Instance.turnsWithoutFood);
+            _happinessDelta -= .05f * (1 + Instance.turnsWithoutFood);
         }
-
+        
         //overpopulation unhappiness
-        if (Instance.currentPopulation > 0) //currentHappiness -= Mathf.Clampf();
-            if (Instance.currentHappiness <= 0) Instance.currentEnergy *= .85f;
-        Instance.currentHappiness = Mathf.Clamp01(Instance.currentHappiness);
+        var imbalance = (int)(Instance.currentPopulation / Instance.populationPerHouse);
+        _happinessDelta -= .03f * imbalance;
+        //final happiness tally
+        Instance.currentHappiness += Mathf.Clamp(_happinessDelta, -.2f, .2f);
+        if (Instance.currentHappiness <= 0) Instance.currentEnergy *= .85f;
 
-        //population increase
-        Instance.currentPopulation += Instance.currentPopulation * Random.Range(.3f, .6f);
+        _currentPopulationDelta *= Random.Range(1.3f, 1.6f);
+
+        //final population tally
+        Instance.currentPopulation += Mathf.Clamp(_currentPopulationDelta, 0.0f, 2.0f);
+
 
         //Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
         _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
@@ -244,7 +258,6 @@ public class GameGod : MonoBehaviour
         if (Instance.currentPopulation <= 0 || Instance.currentSpaceShips >= 1)
         {
             _canvasUI.SetActive(false);
-            _buildSystem.SetActive(false);
             SceneManager.LoadScene("GameOverScene");
         }
     }

@@ -88,7 +88,7 @@ public class TileType
             case WaterFarm: return 5.0f;
 
             //water conservation
-            case WaterConservation: return .05f;
+            case WaterConservation: return .03f;
 
             //energy
             case WaterEnergy: return 2.0f;
@@ -129,7 +129,7 @@ public class TileType
             case GrassApartment:
             case DirtApartment:
             case WaterApartment: return 5;
-            case SpacePort: return 1000;
+            case SpacePort: return 750;
 
             default:
                 throw new System.Exception(string.Format("Invalid Id: {0}", id));
@@ -184,7 +184,7 @@ public class TileType
             case GrassApartment:
             case WaterApartment:
                 formatString = "Dwelling{0}";
-                description = string.Format("\nIncrease Happiness by {0} per turn\nAdjacency Bonus: Parks, Farms improve Happiness\nPenalty: Nuclear Plant reduces Happiness", GetBaseResourcePerRound(GrassApartment));
+                description = string.Format("\nOne required per {0} population\nAdjacency Bonus: Parks provide Happiness\nPenalty: Nuclear Plant reduces Happiness", GameGod.Instance.populationPerHouse);
                 break;
             case SpacePort:
                 formatString = "Space Port{0}";
