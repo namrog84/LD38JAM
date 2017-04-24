@@ -59,13 +59,25 @@ public class BuildTile : MonoBehaviour, IPointerDownHandler
         BuildType = buildtype;
         switch (buildtype)
         {
-            case TileType.Apartment:
+            case TileType.WaterApartment:
                 building = gameObject.AddComponent<HouseController>();
-                renderer.sprite = AssetManager.SpriteMap[TileType.Apartment];
+                renderer.sprite = AssetManager.SpriteMap[TileType.WaterApartment];
                 break;
-            case TileType.RecreationPark:
+            case TileType.GrassApartment:
+                building = gameObject.AddComponent<HouseController>();
+                renderer.sprite = AssetManager.SpriteMap[TileType.GrassApartment];
+                break;
+            case TileType.DirtApartment:
+                building = gameObject.AddComponent<HouseController>();
+                renderer.sprite = AssetManager.SpriteMap[TileType.DirtApartment];
+                break;
+            case TileType.GrassPark:
                 building = gameObject.AddComponent<ParkController>();
-                renderer.sprite = AssetManager.SpriteMap[TileType.RecreationPark];
+                renderer.sprite = AssetManager.SpriteMap[TileType.GrassPark];
+                break;
+            case TileType.DirtPark:
+                building = gameObject.AddComponent<ParkController>();
+                renderer.sprite = AssetManager.SpriteMap[TileType.DirtPark];
                 break;
             case TileType.WaterFarm:
                 building = gameObject.AddComponent<FishFarmController>();
@@ -91,17 +103,9 @@ public class BuildTile : MonoBehaviour, IPointerDownHandler
                 building = gameObject.AddComponent<LaunchPadController>();
                 renderer.sprite = AssetManager.SpriteMap[TileType.SpacePort];
                 break;
-            case TileType.Dirt:
+            case TileType.NoBuilding:
                 BuildType = TileType.NoBuilding;
-                renderer.sprite = AssetManager.SpriteMap[TileType.Dirt];
-                break;
-            case TileType.Grass:
-                BuildType = TileType.NoBuilding;
-                renderer.sprite = AssetManager.SpriteMap[TileType.Grass];
-                break;
-            case TileType.Water:
-                BuildType = TileType.NoBuilding;
-                renderer.sprite = AssetManager.SpriteMap[TileType.Water];
+                renderer.sprite = AssetManager.SpriteMap[TerrainType];
                 break;
             default:
                 throw new System.Exception("BuildTile>AddBuilding>Incorrect Building Type");

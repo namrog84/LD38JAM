@@ -10,7 +10,7 @@ public class BuildManager : MonoBehaviour {
     // Use this for initialization
     void Start() {
  
-        var _buildingIds = TileType.GetIdList();
+        var _buildingIds = TileType.GetIdOptionList();
         foreach (var id in _buildingIds)
         {
             var obj = Instantiate(_optionPrefab);
@@ -31,7 +31,7 @@ public class BuildManager : MonoBehaviour {
     {
         var position = Camera.main.WorldToScreenPoint(obj.transform.position + new Vector3(0,4,0));
         //var terrain = obj.GetComponent<BuildTile>().TerrainType;
-        position.x =  Mathf.Clamp(position.x, 45, 730);
+        position.x =  Mathf.Clamp(position.x, 120, 670);
         position.y = Mathf.Clamp(position.y, 90, 570);
         gameObject.GetComponent<RectTransform>().position = position;
         gameObject.SetActive(true);
@@ -46,31 +46,31 @@ public class BuildManager : MonoBehaviour {
             case TileType.Grass:
                 if (build == TileType.NoBuilding)
                 {
-                    buildOptions.AddRange(new int[4] { TileType.GrassFarm, TileType.RecreationPark, TileType.Apartment, TileType.SpacePort });
+                    buildOptions.AddRange(new int[4] { TileType.GrassFarm, TileType.GrassPark, TileType.GrassApartment, TileType.SpacePort });
                 }
                 else
                 {
-                    buildOptions.Add(TileType.Grass);
+                    buildOptions.Add(TileType.NoBuilding);
                 }
                 break;
             case TileType.Water:
                 if (build == TileType.NoBuilding)
                 {
-                    buildOptions.AddRange(new int[4] { TileType.WaterFarm, TileType.WaterConservation, TileType.Apartment, TileType.WaterEnergy });
+                    buildOptions.AddRange(new int[4] { TileType.WaterFarm, TileType.WaterConservation, TileType.WaterApartment, TileType.WaterEnergy });
                 }
                 else
                 {
-                    buildOptions.Add(TileType.Water);
+                    buildOptions.Add(TileType.NoBuilding);
                 }
                 break;
             case TileType.Dirt:
                 if (build == TileType.NoBuilding)
                 {
-                    buildOptions.AddRange(new int[4] { TileType.DirtEnergy, TileType.RecreationPark, TileType.Apartment, TileType.SpacePort });
+                    buildOptions.AddRange(new int[4] { TileType.DirtEnergy, TileType.DirtPark, TileType.DirtApartment, TileType.SpacePort });
                 }   
                 else
                 {
-                    buildOptions.Add(TileType.Dirt);
+                    buildOptions.Add(TileType.NoBuilding);
                 }
                 break;
             default:

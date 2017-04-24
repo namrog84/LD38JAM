@@ -11,16 +11,19 @@ public class AssetManager : MonoBehaviour {
     {
         SpriteMap = new Dictionary<int, Sprite>()
         {
-            // need to add the other sprites in!
-        {   TileType.Apartment, Resources.Load<Sprite>("Art/houseWater")   },
+            {    TileType.NoBuilding, Resources.Load<Sprite>("Art/redX") },
+        {   TileType.WaterApartment, Resources.Load<Sprite>("Art/houseWater")   },
+          {   TileType.DirtApartment, Resources.Load<Sprite>("Art/deserthouse")   },
+            {   TileType.GrassApartment, Resources.Load<Sprite>("Art/grasshouse")   },
         {   TileType.WaterFarm, Resources.Load<Sprite>("Art/fishfarm5")   },
         {   TileType.GrassFarm, Resources.Load<Sprite>("Art/greenFarm")   },
         {   TileType.SpacePort, Resources.Load<Sprite>("Art/launchpad")   },
-        {   TileType.RecreationPark, Resources.Load<Sprite>("Art/greenRecreational")   },
+        {   TileType.GrassPark, Resources.Load<Sprite>("Art/greenRecreational")   },
+          {   TileType.DirtPark, Resources.Load<Sprite>("Art/DirtPark")   },
         {   TileType.DirtEnergy, Resources.Load<Sprite>("Art/powerLand3")   },
         {   TileType.WaterConservation, Resources.Load<Sprite>("Art/recycleWater")   },
         {   TileType.WaterEnergy, Resources.Load<Sprite>("Art/powerWater2")   },
-
+        // TileType.WaterApartment
         {   TileType.Water, Resources.Load<Sprite>("Art/testWater")   },
         {   TileType.Dirt, Resources.Load<Sprite>("Art/TestDirt")   },
         {   TileType.Grass, Resources.Load<Sprite>("Art/TestGrass")   },

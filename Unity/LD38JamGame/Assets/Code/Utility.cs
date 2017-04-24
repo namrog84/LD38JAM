@@ -36,10 +36,14 @@ public struct TileType
 
     /*hybrid possibility*/
     public const int SpacePort = 40;
-    public const int RecreationPark = 41;
+    public const int GrassPark = 41;
+    public const int DirtPark = 42;
+
 
     /*any possibility*/
-    public const int Apartment = 51;
+    public const int GrassApartment = 51;
+    public const int WaterApartment = 52;
+    public const int DirtApartment = 53;
 
     public static float GetBaseResourcePerRound(int id)
     {
@@ -63,8 +67,11 @@ public struct TileType
             case DirtEnergy: return 10.0f;
 
             //happiness
-            case RecreationPark: return .02f;
-            case Apartment: return 1.0f;
+            case DirtPark:
+            case GrassPark: return .02f;
+            case GrassApartment: 
+            case DirtApartment: 
+            case WaterApartment: return 1.0f;
             //count
             case SpacePort: return 1.0f;
 
@@ -78,10 +85,7 @@ public struct TileType
     {
         switch (id)
         {
-            case NoBuilding: return 0;
-            case Grass: return 10;
-            case Dirt: return 10;
-            case Water: return 10;
+            case NoBuilding: return 10;
 
             case GrassFarm: return 5;
 
@@ -91,8 +95,12 @@ public struct TileType
 
             case DirtEnergy: return 10;
 
-            case RecreationPark: return 5;
-            case Apartment: return 5;
+            case GrassPark:
+            case DirtPark:
+                return 5;
+            case GrassApartment:
+            case DirtApartment: 
+            case WaterApartment: return 5;
             case SpacePort: return 1000;
 
             default:
@@ -109,20 +117,9 @@ public struct TileType
         var description = string.Empty;
         switch (id)
         {
-            case NoBuilding:
-                formatString = "No Building{0}";
-                break;
 
-            case Grass:
+            case NoBuilding:
                 formatString = includeToolTip ? "Remove Building {0}" :"Grass{0}";
-                description = "\nThis will remove the building.";
-                break;
-            case Dirt:
-                formatString = includeToolTip ? "Remove Building {0}" : "Dirt{0}" ;
-                description = "\nThis will remove the building.";
-                break;
-            case Water:
-                formatString = includeToolTip ? "Remove Building {0}" : "Water{0}";
                 description = "\nThis will remove the building.";
                 break;
 
@@ -149,13 +146,16 @@ public struct TileType
                 description = string.Format("\nIncrease Base Energy Production by {0}", GetBaseResourcePerRound(WaterEnergy));
                 break;
 
-            case RecreationPark:
+            case GrassPark:
+            case DirtPark:
                 formatString = "Parks & Recreation{0}";
-                description = string.Format("\nIncrease Happiness by {0} per turn", GetBaseResourcePerRound(WaterEnergy));
+                description = string.Format("\nIncrease Happiness by {0} per turn", GetBaseResourcePerRound(GrassPark));
                 break;
-            case Apartment:
+            case DirtApartment:
+            case GrassApartment:
+            case WaterApartment:
                 formatString = "Dwelling{0}";
-                description = string.Format("\nIncrease Happiness by {0} per turn", GetBaseResourcePerRound(Apartment));
+                description = string.Format("\nIncrease Happiness by {0} per turn", GetBaseResourcePerRound(GrassApartment));
                 break;
             case SpacePort:
                 formatString = "Space Port{0}";
@@ -168,13 +168,14 @@ public struct TileType
         return string.Format(formatString, includeToolTip ? description + append : string.Empty);
     }
 
-    public static List<int> GetIdList()
+    public static List<int> GetIdOptionList()
     {
+        //this will determine the order options appear
         return new List<int> {
-            RecreationPark, Apartment, SpacePort,
-            DirtEnergy, GrassFarm,
-            WaterEnergy, WaterFarm, WaterConservation,
-            Water, Grass, Dirt };
+            GrassApartment, GrassPark,  GrassFarm,
+            DirtApartment, DirtPark,  DirtEnergy,
+            WaterApartment, WaterEnergy, WaterFarm, WaterConservation,
+            SpacePort, NoBuilding };
     }
 
 };

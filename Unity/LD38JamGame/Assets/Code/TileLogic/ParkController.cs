@@ -20,7 +20,7 @@ public class ParkController : BasicBuilding
         //bonuses etc..
 
 
-        return TileType.GetBaseResourcePerRound(TileType.RecreationPark);
+        return TileType.GetBaseResourcePerRound(TileType.DirtPark);
     }
 
     public override void EndTurn()

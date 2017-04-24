@@ -19,7 +19,7 @@ public class TerrainGen : MonoBehaviour
 
     public int[,] worldTiles;
 
-    public float grassPercentage = 0.6f;
+    public float grassPercentage = 0.4f;
     public float waterPercentage = 0.2f;
     public float dirtPercentage = 0.4f;
 

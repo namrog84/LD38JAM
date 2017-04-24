@@ -18,7 +18,7 @@ public class GameGod : MonoBehaviour
     private static void SetNewGame()
     {
         Instance._currentFocusTile = -1;
-        Instance.currentEnergy = 15;
+        Instance.currentEnergy = 1500;
         Instance.currentHappiness = .50f;
         Instance.currentFood = 10;
         Instance.currentTurn = Instance.turnsWithoutFood = Instance.turnsWithoutWater = Instance.currentConservationFacilities = Instance.currentSpaceShips = 0;
@@ -174,6 +174,11 @@ public class GameGod : MonoBehaviour
 
 
         StartCoroutine(FadeFunc());
+
+    }
+
+    void ApplyGameRules()
+    {
         currentConservationFacilities = 0;
         currentSpaceShips = 0;
         //add tile bonuses
@@ -197,7 +202,6 @@ public class GameGod : MonoBehaviour
             if (turnsWithoutWater == 4) currentPopulation = 0;
             currentHappiness -= Mathf.Pow(.15f, 1 + turnsWithoutWater);
         }
-        Debug.LogFormat("water left {0}", currentWaterRemaining);
 
         //food
         currentFood -= currentPopulation;
@@ -210,7 +214,7 @@ public class GameGod : MonoBehaviour
 
         //overpopulation unhappiness
         if (currentPopulation > 0) //currentHappiness -= Mathf.Clampf();
-        if (currentHappiness <= 0) currentEnergy *= .85f;
+            if (currentHappiness <= 0) currentEnergy *= .85f;
         currentHappiness = Mathf.Clamp01(currentHappiness);
 
         //population increase
@@ -219,15 +223,13 @@ public class GameGod : MonoBehaviour
         //Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
         _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
 
-        if(currentPopulation <= 0 || currentSpaceShips >= 1)
+        if (currentPopulation <= 0 || currentSpaceShips >= 1)
         {
             _canvasUI.SetActive(false);
             _buildSystem.SetActive(false);
             SceneManager.LoadScene("GameOverScene");
         }
     }
-
-
 
     public Texture2D fadeTexture;
     public bool isFading = false;
@@ -255,7 +257,7 @@ public class GameGod : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        //call EndTurn Func
+        ApplyGameRules();
         yield return new WaitForEndOfFrame();
 
 
@@ -272,6 +274,8 @@ public class GameGod : MonoBehaviour
         }
         //yield return null;
     }
+
+  
 
 }
 
