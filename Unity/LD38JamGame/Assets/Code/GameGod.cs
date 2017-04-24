@@ -59,10 +59,16 @@ public class GameGod : MonoBehaviour
         //north, south, east, west
         var gb = Instance.GameBoard;
         var _adjacencyList = new List<BuildTile>();
-        var tileInfo = new TileInformation[] { gb[gb[id].NorthId], gb[gb[id].EastId], gb[gb[id].SouthId], gb[gb[id].WestId] };
+
+        var tileInfo = new List<TileInformation>();
+        if (gb[id].NorthId > -1) tileInfo.Add(gb[gb[id].NorthId]);
+        if (gb[id].EastId > -1) tileInfo.Add(gb[gb[id].EastId]);
+        if (gb[id].WestId > -1) tileInfo.Add(gb[gb[id].WestId]);
+        if (gb[id].SouthId > -1) tileInfo.Add(gb[gb[id].SouthId]);
+
         foreach (var tile in tileInfo)
         {
-            _adjacencyList.Add(tile.GroundTileObject.GetComponent<BuildTile>());
+            _adjacencyList.Add(tile.GroundTileObject.GetComponent<BuildTile>()); 
         }
         return _adjacencyList;
     }
