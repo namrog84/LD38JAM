@@ -21,7 +21,8 @@ public class GameGod : MonoBehaviour
         Instance.currentHappiness = .50f;
         Instance.currentFood = 10;
         Instance.currentTurn = Instance.turnsWithoutFood = Instance.turnsWithoutWater = Instance.currentConservationFacilities = Instance.currentSpaceShips = Instance.currentHousingFacilities = 0;
-        Instance.currentPopulation = Instance.baseHappinessPerRound = 5;
+        Instance.currentPopulation = 8;
+        Instance.baseHappinessPerRound = 5;
         Instance.currentWaterModifier = 1;
         Instance.currentWaterRemaining = Instance.totalWorldWaterStart;
         Instance._uiManager.GetComponent<UIResourceManager>().UpdateStatus();
@@ -158,7 +159,7 @@ public class GameGod : MonoBehaviour
             {
                 _insufficientShow = true;
                 UIResourceManager.CostToolTipObject.SetActive(true);
-                var insufficient = string.Format("Insufficient Funds\nCost: {0} > Energy: {1}", cost, Instance.currentEnergy);
+                var insufficient = string.Format("Insufficient Funds\nCost: {0} > Energy: {1}", cost, (int)Instance.currentEnergy);
                 UIResourceManager.CostToolTipObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = insufficient;
                 StartCoroutine("Fade");
             }
@@ -200,8 +201,9 @@ public class GameGod : MonoBehaviour
     {
         _buildSystem.SetActive(false);
         var _happinessDelta = 0.0f;
-        var _currentPopulationDelta = 0.0f;
+        var _currentPopulationDelta = 1.0f;
         Instance.currentConservationFacilities = Instance.currentHousingFacilities = Instance.currentSpaceShips = 0;
+
         Instance.currentWaterModifier = 1;
         //add tile bonuses
         foreach (var EndTurnObject in Instance.TurnTickables)
@@ -217,8 +219,19 @@ public class GameGod : MonoBehaviour
 
         Instance.currentWaterModifier *= 1.0f - Instance.currentConservationFacilities * TileType.GetBaseResourcePerRound(TileType.WaterConservation);
         Debug.LogFormat("modifier is {0}", Instance.currentWaterModifier);
+
+        if (Instance.currentFood > Instance.currentPopulation * 3) _currentPopulationDelta *= 1.5f;
+        //food
+        Instance.currentFood -= Instance.currentPopulation;
+
+        if (Instance.currentFood < 0)
+        {
+            Instance.currentFood = 0;
+            Instance.turnsWithoutFood++;
+            _happinessDelta -= .05f * (1 + Instance.turnsWithoutFood);
+        }
+
         //water
-        Instance.currentWaterRemaining -= (Instance.currentPopulation * .07f) * Instance.currentWaterModifier;
         if (Instance.currentWaterRemaining < 0)
         {
             Instance.currentWaterRemaining = 0;
@@ -227,30 +240,25 @@ public class GameGod : MonoBehaviour
             if (Instance.turnsWithoutWater == 4) _currentPopulationDelta = 0;
             _happinessDelta -= Mathf.Pow(.15f, 1 + Instance.turnsWithoutWater);
         }
-        if (Instance.currentFood > Instance.currentPopulation * 2) _currentPopulationDelta *= 1.5f;
 
-        //food
-        Instance.currentFood -= Instance.currentPopulation;
-        
-        if (Instance.currentFood < 0)
-        {
-            Instance.currentFood = 0;
-            Instance.turnsWithoutFood++;
-            _happinessDelta -= .05f * (1 + Instance.turnsWithoutFood);
-        }
-        
+        Instance.currentWaterRemaining -= (Instance.currentPopulation * .07f) * Instance.currentWaterModifier;
+
         //overpopulation unhappiness
         var imbalance = (int)(Instance.currentPopulation / Instance.populationPerHouse);
         _happinessDelta -= .03f * imbalance;
         //final happiness tally
+        Debug.LogFormat("{0} happiness",_happinessDelta);
         Instance.currentHappiness += Mathf.Clamp(_happinessDelta, -.2f, .2f);
+        Instance.currentHappiness = Mathf.Clamp01(Instance.currentHappiness);
         if (Instance.currentHappiness <= 0) Instance.currentEnergy *= .85f;
 
-        _currentPopulationDelta *= Random.Range(1.3f, 1.6f);
-
+        _currentPopulationDelta += Random.Range(.5f, 1.0f);
+        var growpop = Mathf.Clamp(_currentPopulationDelta, 0.0f, 1.5f);
+        Debug.LogFormat("{0} population growth {1}", growpop, _currentPopulationDelta);
         //final population tally
-        Instance.currentPopulation += Mathf.Clamp(_currentPopulationDelta, 0.0f, 2.0f);
+        Instance.currentPopulation *= growpop;
 
+       
 
         //Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
         _uiManager.GetComponent<UIResourceManager>().UpdateStatus();

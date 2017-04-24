@@ -84,22 +84,22 @@ public class TileType
             case Water: return 0.0f;
 
             //food
-            case GrassFarm: return 7.0f;
-            case WaterFarm: return 5.0f;
+            case GrassFarm: return 10.0f;
+            case WaterFarm: return 8.0f;
 
             //water conservation
             case WaterConservation: return .03f;
 
             //energy
-            case WaterEnergy: return 2.0f;
-            case DirtEnergy: return 10.0f;
+            case WaterEnergy: return 3.0f;
+            case DirtEnergy: return 8.0f;
 
             //happiness
             case DirtPark:
             case GrassPark: return .02f;
             case GrassApartment:
             case DirtApartment:
-            case WaterApartment: return 1.0f;
+            case WaterApartment: return 0.02f;
             //count
             case SpacePort: return 1.0f;
 
