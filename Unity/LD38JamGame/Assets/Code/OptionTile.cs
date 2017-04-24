@@ -21,8 +21,9 @@ public class OptionTile : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        GameGod.Instance.OptionClicked(BuildType);
         UIResourceManager.CostToolTipObject.SetActive(false);
+        GameGod.Instance.OptionClicked(BuildType);
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -34,7 +35,7 @@ public class OptionTile : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
     {
         var tooltip = UIResourceManager.CostToolTipObject;
         var position = transform.position + new Vector3(0, 50, 0);
-        position.x = Mathf.Clamp(position.x, 101.0f, 678.0f);
+        position.x = Mathf.Clamp(position.x, 160.0f, 678.0f);
         if (position.y >= 561.0f)
         {
             position.y = 501.0f;

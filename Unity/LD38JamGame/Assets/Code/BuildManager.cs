@@ -39,7 +39,6 @@ public class BuildManager : MonoBehaviour {
 
     public void SetBuildOptions(int terrain, int build)
     {
-
         var buildOptions = new List<int>();
         switch (terrain)
         {

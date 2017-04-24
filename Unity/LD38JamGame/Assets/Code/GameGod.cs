@@ -57,7 +57,7 @@ public class GameGod : MonoBehaviour
 
 
     public List<ITurnInterface> TurnTickables = new List<ITurnInterface>();
-
+    private bool _insufficientShow = false;
     private static GameObject _uiManager;
     public void SetUIManager(GameObject g)
     {
@@ -133,8 +133,23 @@ public class GameGod : MonoBehaviour
         }
         else
         {
-            Debug.LogFormat("Insufficient Funds> current energy: {0} || cost: {1}", currentEnergy, cost);
+            if (!_insufficientShow)
+            {
+                _insufficientShow = true;
+                UIResourceManager.CostToolTipObject.SetActive(true);
+                var insufficient = string.Format("Insufficient Funds\nCost: {0} > Energy: {1}", cost, currentEnergy);
+                UIResourceManager.CostToolTipObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = insufficient;
+                StartCoroutine("Fade");
+            }
+
         }
+    }
+
+    private IEnumerator Fade()
+    {
+        yield return new WaitForSeconds(1.0f);
+        UIResourceManager.CostToolTipObject.SetActive(false);
+        _insufficientShow = false;
     }
 
     // Update is called once per frame
@@ -178,21 +193,21 @@ public class GameGod : MonoBehaviour
         {
             currentFood = 0;
             turnsWithoutFood++;
-            currentHappiness -= Mathf.Pow(.02f, 1 + turnsWithoutFood);
+            currentHappiness -= .05f * (1 + turnsWithoutFood);
         }
 
         //overpopulation unhappiness
-        currentHappiness -= currentPopulation - baseHappinessPerRound;
+        if (currentPopulation > 0) //currentHappiness -= Mathf.Clampf();
         if (currentHappiness <= 0) currentEnergy *= .85f;
         currentHappiness = Mathf.Clamp01(currentHappiness);
 
         //population increase
-        currentPopulation += currentPopulation * Mathf.Clamp(currentHappiness, .3f, .6f);
+        currentPopulation += currentPopulation * Random.Range(.3f, .6f);
 
         //Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
         _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
 
-        if(currentPopulation <= 0)
+        if(currentPopulation <= 0 || currentSpaceShips >= 1)
         {
             _canvasUI.SetActive(false);
             _buildSystem.SetActive(false);
