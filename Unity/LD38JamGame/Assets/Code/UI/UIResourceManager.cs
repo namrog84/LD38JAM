@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
+
+    private UIResource _turnUIComponent;
+    private UIResource _waterUIComponent;
+    public static GameObject CostToolTipObject;
+
     public void OnPointerDown(PointerEventData eventData)
     {
         var pos = Camera.main.ScreenToWorldPoint(eventData.pressPosition);
@@ -21,7 +26,6 @@ public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         //gameObject.GetComponent<Image>().CrossFadeColor(Color.black, .5f, false, true);
         gameObject.GetComponent<Image>().CrossFadeAlpha(0.3f, .3f, true);
-
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -29,15 +33,18 @@ public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerEx
         gameObject.GetComponent<Image>().CrossFadeAlpha(1f, .3f, true);
     }
 
-    private UIResource _turnUIComponent;
+
     // Use this for initialization
     private void Awake()
     {
+        GameGod.Instance.SetUIManager(gameObject);
         _turnUIComponent = GameObject.Find("TurnCount").GetComponent<UIResource>();
+        _waterUIComponent = GameObject.Find("WaterRemain").GetComponent<UIResource>();
     }
     void Start ()
-    {
-        GameGod.Instance.SetUIManager(gameObject);     
+    {   
+        CostToolTipObject = GameObject.Find("CostTooltip");
+        CostToolTipObject.SetActive(false);      
     }
 	
 	// Update is called once per frame
@@ -48,6 +55,7 @@ public class UIResourceManager : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void UpdateStatus()
     {
         _turnUIComponent.SetText(GameGod.Instance.currentTurn.ToString());
+        _waterUIComponent.SetText(GameGod.Instance.currentWaterRemaining.ToString());
         foreach (Transform obj in transform)
         {
             var _uiComponent = obj.gameObject.GetComponent<UIResource>();

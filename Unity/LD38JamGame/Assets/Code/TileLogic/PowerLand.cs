@@ -7,14 +7,14 @@ public class PowerLandController : BasicBuilding
 
     public override void OnStart()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.DirtEnergy];
+      
     }
 
     public float CalculateEnergy()
     {
         //check neighbors/negatives
         //bonuses etc..
-        return 2.0f;
+        return TileType.GetBaseResourcePerRound(TileType.DirtEnergy);
     }
 
     public override void EndTurn()

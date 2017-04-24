@@ -7,7 +7,7 @@ public class LandFarmController : BasicBuilding
 
     public override void OnStart()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.GrassFarm];
+       
     }
 
     void Update()
@@ -18,7 +18,7 @@ public class LandFarmController : BasicBuilding
     private float CalculateFoodProduced()
     {
 
-        return 10.0f;
+        return TileType.GetBaseResourcePerRound(TileType.GrassFarm);
     }
 
     public override void EndTurn()

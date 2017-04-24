@@ -7,17 +7,25 @@ public class ParkController : BasicBuilding
 
     public override void OnStart()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.RecreationPark];
+        
     }
 
     void Update()
     {
 
     }
+    public float CalculateHappiness()
+    {
+        //check neighbors/negatives
+        //bonuses etc..
+
+
+        return TileType.GetBaseResourcePerRound(TileType.RecreationPark);
+    }
 
     public override void EndTurn()
     {
-
+        GameGod.Instance.currentHappiness += CalculateHappiness();
     }
 
 }

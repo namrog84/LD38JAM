@@ -7,7 +7,7 @@ public class LaunchPadController : BasicBuilding
 
     public override void OnStart()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.SpacePort];
+       
     }
 
     void Update()
@@ -17,12 +17,6 @@ public class LaunchPadController : BasicBuilding
 
     public override void EndTurn()
     {
-        // if > X Y Z
-        // BLAST OFF!
-    }
-
-    public void BlastOff()
-    {
-
+        GameGod.Instance.currentSpaceShips++;
     }
 }

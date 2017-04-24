@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class UIResource : MonoBehaviour
 {
-
-
     private Text _UItextComponent;
     public int Id;
     public string Field;

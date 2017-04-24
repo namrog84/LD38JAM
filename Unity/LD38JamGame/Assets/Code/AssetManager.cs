@@ -11,14 +11,14 @@ public class AssetManager : MonoBehaviour {
     {
         SpriteMap = new Dictionary<int, Sprite>()
         {
+            // need to add the other sprites in!
         {   TileType.Apartment, Resources.Load<Sprite>("Art/houseWater")   },
-        {   TileType.GrassFarm, Resources.Load<Sprite>("Art/grassfarm")   },
-        {   TileType.SpacePort, Resources.Load<Sprite>("Art/LaunchStation")   },
-        {   TileType.RecreationPark, Resources.Load<Sprite>("Art/Recreational")   },
-        {   TileType.DirtEnergy, Resources.Load<Sprite>("Art/powerLand2")   },
-
         {   TileType.WaterFarm, Resources.Load<Sprite>("Art/fishfarm5")   },
-        {   TileType.WaterConservation, Resources.Load<Sprite>("Art/RecycleWater")   },
+        {   TileType.GrassFarm, Resources.Load<Sprite>("Art/greenFarm")   },
+        {   TileType.SpacePort, Resources.Load<Sprite>("Art/launchpad")   },
+        {   TileType.RecreationPark, Resources.Load<Sprite>("Art/greenRecreational")   },
+        {   TileType.DirtEnergy, Resources.Load<Sprite>("Art/powerLand2")   },
+        {   TileType.WaterConservation, Resources.Load<Sprite>("Art/recycleWater")   },
         {   TileType.WaterEnergy, Resources.Load<Sprite>("Art/powerWater2")   },
 
         {   TileType.Water, Resources.Load<Sprite>("Art/testWater")   },

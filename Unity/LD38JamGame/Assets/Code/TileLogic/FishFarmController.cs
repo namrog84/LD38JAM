@@ -7,12 +7,12 @@ public class FishFarmController : BasicBuilding
     public override void OnStart()
     {
 
-        gameObject.GetComponent<SpriteRenderer>().sprite = AssetManager.SpriteMap[TileType.WaterFarm];
+       
     }
 
     private float CalculateFoodProduced()
     {
-        return 5.0f;
+        return TileType.GetBaseResourcePerRound(TileType.WaterFarm);
     }
 
     public override void EndTurn()

@@ -14,50 +14,55 @@ public class GameGod : MonoBehaviour
     // ADAM TO DO
     // neighbor calculate better now with buildings.
 
+
     private static void SetNewGame()
     {
         Instance._currentFocusTile = -1;
-        Instance.currentEnergy = Instance.currentFood = Instance.currentHappiness = Instance.currentTurn = 0;
-        Instance.currentPopulation = 0;
+        Instance.currentEnergy = 15;
+        Instance.currentHappiness = .50f;
+        Instance.currentFood = 10;
+        Instance.currentTurn = Instance.turnsWithoutFood = Instance.turnsWithoutWater = Instance.currentConservationFacilities = Instance.currentSpaceShips = 0;
+        Instance.currentPopulation = Instance.baseHappinessPerRound = 5;
+        Instance.currentWaterModifier = 1;
         Instance.currentWaterRemaining = Instance.totalWorldWaterStart;
+        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
         _canvasUI.SetActive(true);
-        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();     
+
     }
     private static GameObject _canvasUI;
     public List<TileInformation> GameBoard = new List<TileInformation>();
-  
-    private int _currentFocusTile;
-    // Merp Derp Eneryg Power!
-    public float currentEnergy;
 
-    // Merp Derp Eneryg Power!
-    public float currentFood;
+    private int _currentFocusTile = -1;
 
 
-    // N x 1000s of population?  (1 here means 1000 people?  or 1 million? I dunno)
-    public float currentPopulation;
 
-    // Percentage of 0 to 1 of population happiness
-    public float currentHappiness;
+    public float totalWorldWaterStart = 100;
 
-    // Player's current turn
+    public float baseGrowthPerRound;
+    public float baseHappinessPerRound;
+    public float baseEnergyPerRound;
+
     public int currentTurn;
-
-    // How much water is left for the planet
+    public float currentEnergy;
+    public float currentPopulation;
+    public float currentHappiness;
+    public float currentFood;
     public float currentWaterRemaining;
+    public float currentWaterModifier;
+    public int currentConservationFacilities;
+    private int turnsWithoutFood = 0;
+    private int turnsWithoutWater = 0;
 
-    // Total amount of water on planet
-    public float totalWorldWaterStart = 150;
+    public int currentSpaceShips;
 
-    
+
     public List<ITurnInterface> TurnTickables = new List<ITurnInterface>();
-
+    private bool _insufficientShow = false;
     private static GameObject _uiManager;
     public void SetUIManager(GameObject g)
     {
         if (_uiManager != null) return;
         _uiManager = g;
-        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
     }
 
     private static GameObject _buildSystem;
@@ -84,7 +89,7 @@ public class GameGod : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
-       
+
     }
 
     private void Start()
@@ -92,7 +97,7 @@ public class GameGod : MonoBehaviour
         referenceCount++;
         //only called on singleton
         if (referenceCount <= 1) _canvasUI = GameObject.Find("Canvas");
-        SetNewGame();  //needed on every call but after the previous assignment
+        SetNewGame();  //needed on every call but after the previous assignment  
         if (referenceCount > 1)
         {
             //there is only 1 GameGod! Destroy the heathens! 
@@ -106,8 +111,7 @@ public class GameGod : MonoBehaviour
         if (_currentFocusTile == id) return;
 
         _currentFocusTile = id;
-        var tileInfo = GameBoard[id];
-        var obj = tileInfo.GroundTileObject;
+        var obj = GameBoard[id].GroundTileObject;
         var bm = _buildSystem.GetComponent<BuildManager>();
         var bt = obj.GetComponent<BuildTile>();
         bm.MoveBuildSystem(obj);
@@ -118,32 +122,156 @@ public class GameGod : MonoBehaviour
     public void OptionClicked(int id)
     {
         //Debug.LogFormat("Building type selected: {0}, time to change tile {1}", TileType.ToString(id), CurrentFocusTile);
-        GameBoard[_currentFocusTile].GroundTileObject.GetComponent<BuildTile>().AddBuilding(id);
+        var cost = TileType.GetBuildCost(id);
+        if (currentEnergy >= cost)
+        {
+            currentEnergy -= cost;
+            _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
+            GameBoard[_currentFocusTile].GroundTileObject.GetComponent<BuildTile>().AddBuilding(id);
+            _buildSystem.SetActive(false);
+            _currentFocusTile = -1;
+        }
+        else
+        {
+            if (!_insufficientShow)
+            {
+                _insufficientShow = true;
+                UIResourceManager.CostToolTipObject.SetActive(true);
+                var insufficient = string.Format("Insufficient Funds\nCost: {0} > Energy: {1}", cost, currentEnergy);
+                UIResourceManager.CostToolTipObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = insufficient;
+                StartCoroutine("Fade");
+            }
+
+        }
+    }
+
+    private IEnumerator Fade()
+    {
+        yield return new WaitForSeconds(1.0f);
+        UIResourceManager.CostToolTipObject.SetActive(false);
+        _insufficientShow = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-  
+
 
     }
 
 
+    Button endTurnButton;
     public void EndTurn()
     {
-        foreach(var EndTurnObject in TurnTickables)
+        isFading = true;
+        if (endTurnButton == null)
+        {
+            var etb = GameObject.Find("EndTurnButton");
+            endTurnButton = etb.GetComponent<Button>();
+        }
+        endTurnButton.interactable = false;
+
+
+
+        StartCoroutine(FadeFunc());
+        currentConservationFacilities = 0;
+        currentSpaceShips = 0;
+        //add tile bonuses
+        foreach (var EndTurnObject in TurnTickables)
         {
             EndTurnObject.EndTurn();
         }
+        //move turn
         currentTurn++;
+
+        //energy restoration
+        currentEnergy += baseEnergyPerRound;
+
+        //water
+        currentWaterRemaining -= (currentPopulation * .1f) * currentWaterModifier;
+        if (currentWaterRemaining < 0)
+        {
+            currentWaterRemaining = 0;
+            turnsWithoutWater++;
+            if (turnsWithoutWater == 2) currentPopulation *= .50f;
+            if (turnsWithoutWater == 4) currentPopulation = 0;
+            currentHappiness -= Mathf.Pow(.15f, 1 + turnsWithoutWater);
+        }
+        Debug.LogFormat("water left {0}", currentWaterRemaining);
+
+        //food
+        currentFood -= currentPopulation;
+        if (currentFood < 0)
+        {
+            currentFood = 0;
+            turnsWithoutFood++;
+            currentHappiness -= .05f * (1 + turnsWithoutFood);
+        }
+
+        //overpopulation unhappiness
+        if (currentPopulation > 0) //currentHappiness -= Mathf.Clampf();
+        if (currentHappiness <= 0) currentEnergy *= .85f;
+        currentHappiness = Mathf.Clamp01(currentHappiness);
+
+        //population increase
+        currentPopulation += currentPopulation * Random.Range(.3f, .6f);
+
         //Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
         _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
 
-        if(currentPopulation <= 0)
+        if(currentPopulation <= 0 || currentSpaceShips >= 1)
         {
             _canvasUI.SetActive(false);
+            _buildSystem.SetActive(false);
             SceneManager.LoadScene("GameOverScene");
         }
     }
 
+
+
+    public Texture2D fadeTexture;
+    public bool isFading = false;
+    private void OnGUI()
+    {
+        if (isFading)
+        {
+            var col = GUI.color;
+            col.a = alpha;
+            GUI.color = col;
+            GUI.depth = -1000;
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeTexture);
+        }
+    }
+
+    private float alpha = 0.0f;
+    private float fadeDir = 1;
+    private float fadeSpeed = 1.4f;
+    IEnumerator FadeFunc()
+    {
+        while (alpha < 1)
+        {
+            alpha += fadeDir * fadeSpeed * Time.deltaTime;
+            alpha = Mathf.Clamp01(alpha);
+            yield return new WaitForEndOfFrame();
+        }
+
+        //call EndTurn Func
+        yield return new WaitForEndOfFrame();
+
+
+        while (alpha > 0)
+        {
+            alpha += -fadeDir * fadeSpeed * Time.deltaTime;
+            alpha = Mathf.Clamp01(alpha);
+            yield return new WaitForEndOfFrame();
+        }
+        isFading = false;
+        if (endTurnButton != null)
+        {
+            endTurnButton.interactable = true;
+        }
+        //yield return null;
+    }
+
 }
+
