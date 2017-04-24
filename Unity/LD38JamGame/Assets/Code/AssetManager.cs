@@ -17,7 +17,7 @@ public class AssetManager : MonoBehaviour {
         {   TileType.GrassFarm, Resources.Load<Sprite>("Art/greenFarm")   },
         {   TileType.SpacePort, Resources.Load<Sprite>("Art/launchpad")   },
         {   TileType.RecreationPark, Resources.Load<Sprite>("Art/greenRecreational")   },
-        {   TileType.DirtEnergy, Resources.Load<Sprite>("Art/powerLand2")   },
+        {   TileType.DirtEnergy, Resources.Load<Sprite>("Art/powerLand3")   },
         {   TileType.WaterConservation, Resources.Load<Sprite>("Art/recycleWater")   },
         {   TileType.WaterEnergy, Resources.Load<Sprite>("Art/powerWater2")   },
 
