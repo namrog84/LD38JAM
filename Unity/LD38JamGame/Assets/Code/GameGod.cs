@@ -31,9 +31,9 @@ public class GameGod : MonoBehaviour
     }
     private static GameObject _canvasUI;
     public List<TileInformation> GameBoard = new List<TileInformation>();
-  
+
     private int _currentFocusTile = -1;
-    
+
 
 
     public float totalWorldWaterStart = 100;
@@ -89,7 +89,7 @@ public class GameGod : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
-       
+
     }
 
     private void Start()
@@ -140,13 +140,25 @@ public class GameGod : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-  
+
 
     }
 
 
+    Button endTurnButton;
     public void EndTurn()
     {
+        isFading = true;
+        if (endTurnButton == null)
+        {
+            var etb = GameObject.Find("EndTurnButton");
+            endTurnButton = etb.GetComponent<Button>();
+        }
+        endTurnButton.interactable = false;
+
+
+
+        StartCoroutine(FadeFunc());
         currentConservationFacilities = 0;
         currentSpaceShips = 0;
         //add tile bonuses
@@ -162,13 +174,13 @@ public class GameGod : MonoBehaviour
 
         //water
         currentWaterRemaining -= (currentPopulation * .1f) * currentWaterModifier;
-        if (currentWaterRemaining < 0) 
+        if (currentWaterRemaining < 0)
         {
             currentWaterRemaining = 0;
             turnsWithoutWater++;
             if (turnsWithoutWater == 2) currentPopulation *= .50f;
             if (turnsWithoutWater == 4) currentPopulation = 0;
-            currentHappiness -= Mathf.Pow(.15f, 1 + turnsWithoutWater); 
+            currentHappiness -= Mathf.Pow(.15f, 1 + turnsWithoutWater);
         }
         Debug.LogFormat("water left {0}", currentWaterRemaining);
 
@@ -192,7 +204,7 @@ public class GameGod : MonoBehaviour
         //Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
         _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
 
-        if(currentPopulation <= 0)
+        if (currentPopulation <= 0)
         {
             _canvasUI.SetActive(false);
             _buildSystem.SetActive(false);
@@ -200,4 +212,51 @@ public class GameGod : MonoBehaviour
         }
     }
 
+
+
+    public Texture2D fadeTexture;
+    public bool isFading = false;
+    private void OnGUI()
+    {
+        if (isFading)
+        {
+            var col = GUI.color;
+            col.a = alpha;
+            GUI.color = col;
+            GUI.depth = -1000;
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeTexture);
+        }
+    }
+
+    private float alpha = 0.0f;
+    private float fadeDir = 1;
+    private float fadeSpeed = 1.4f;
+    IEnumerator FadeFunc()
+    {
+        while (alpha < 1)
+        {
+            alpha += fadeDir * fadeSpeed * Time.deltaTime;
+            alpha = Mathf.Clamp01(alpha);
+            yield return new WaitForEndOfFrame();
+        }
+
+        //call EndTurn Func
+        yield return new WaitForEndOfFrame();
+
+
+        while (alpha > 0)
+        {
+            alpha += -fadeDir * fadeSpeed * Time.deltaTime;
+            alpha = Mathf.Clamp01(alpha);
+            yield return new WaitForEndOfFrame();
+        }
+        isFading = false;
+        if (endTurnButton != null)
+        {
+            endTurnButton.interactable = true;
+        }
+        //yield return null;
+    }
+
 }
+
