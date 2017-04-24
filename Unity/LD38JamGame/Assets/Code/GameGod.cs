@@ -14,7 +14,6 @@ public class GameGod : MonoBehaviour
     // ADAM TO DO
     // neighbor calculate better now with buildings.
 
-
     private static void SetNewGame()
     {
         Instance._currentFocusTile = -1;
@@ -25,16 +24,16 @@ public class GameGod : MonoBehaviour
         Instance.currentPopulation = Instance.baseHappinessPerRound = 5;
         Instance.currentWaterModifier = 1;
         Instance.currentWaterRemaining = Instance.totalWorldWaterStart;
-        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
-        _canvasUI.SetActive(true);
-
+        Instance._uiManager.GetComponent<UIResourceManager>().UpdateStatus();
+        Instance._canvasUI.SetActive(true);
+        Instance.TurnTickables = new List<ITurnInterface>();
     }
-    private static GameObject _canvasUI;
+    private GameObject _canvasUI;
     public List<TileInformation> GameBoard = new List<TileInformation>();
 
     private int _currentFocusTile = -1;
 
-
+    public List<ITurnInterface> TurnTickables;
 
     public float totalWorldWaterStart = 100;
 
@@ -55,17 +54,31 @@ public class GameGod : MonoBehaviour
 
     public int currentSpaceShips;
 
+    public List<BuildTile> GetAdjacencyTiles(int id)
+    {
+        //north, south, east, west
+        var gb = Instance.GameBoard;
+        var _adjacencyList = new List<BuildTile>();
+        var tileInfo = new TileInformation[] { gb[gb[id].NorthId], gb[gb[id].EastId], gb[gb[id].SouthId], gb[gb[id].WestId] };
+        foreach (var tile in tileInfo)
+        {
+            _adjacencyList.Add(tile.GroundTileObject.GetComponent<BuildTile>());
+        }
+        return _adjacencyList;
+    }
 
-    public List<ITurnInterface> TurnTickables = new List<ITurnInterface>();
+
     private bool _insufficientShow = false;
-    private static GameObject _uiManager;
+
+
+    private GameObject _uiManager;
     public void SetUIManager(GameObject g)
     {
         if (_uiManager != null) return;
         _uiManager = g;
     }
 
-    private static GameObject _buildSystem;
+    private GameObject _buildSystem;
     public void SetBuildSystem(GameObject g)
     {
         if (_buildSystem != null) return;
@@ -87,9 +100,8 @@ public class GameGod : MonoBehaviour
         }
     }
     void Awake()
-    {
+    { 
         DontDestroyOnLoad(gameObject);
-
     }
 
     private void Start()
@@ -123,9 +135,9 @@ public class GameGod : MonoBehaviour
     {
         //Debug.LogFormat("Building type selected: {0}, time to change tile {1}", TileType.ToString(id), CurrentFocusTile);
         var cost = TileType.GetBuildCost(id);
-        if (currentEnergy >= cost)
+        if (Instance.currentEnergy >= cost)
         {
-            currentEnergy -= cost;
+            Instance.currentEnergy -= cost;
             _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
             GameBoard[_currentFocusTile].GroundTileObject.GetComponent<BuildTile>().AddBuilding(id);
             _buildSystem.SetActive(false);
@@ -137,7 +149,7 @@ public class GameGod : MonoBehaviour
             {
                 _insufficientShow = true;
                 UIResourceManager.CostToolTipObject.SetActive(true);
-                var insufficient = string.Format("Insufficient Funds\nCost: {0} > Energy: {1}", cost, currentEnergy);
+                var insufficient = string.Format("Insufficient Funds\nCost: {0} > Energy: {1}", cost, Instance.currentEnergy);
                 UIResourceManager.CostToolTipObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = insufficient;
                 StartCoroutine("Fade");
             }
@@ -179,51 +191,53 @@ public class GameGod : MonoBehaviour
 
     void ApplyGameRules()
     {
-        currentConservationFacilities = 0;
-        currentSpaceShips = 0;
+        Instance.currentConservationFacilities = 0;
+        Instance.currentSpaceShips = 0;
+ 
         //add tile bonuses
-        foreach (var EndTurnObject in TurnTickables)
+        foreach (var EndTurnObject in Instance.TurnTickables)
         {
             EndTurnObject.EndTurn();
         }
+
         //move turn
-        currentTurn++;
+        Instance.currentTurn++;
 
         //energy restoration
-        currentEnergy += baseEnergyPerRound;
+        Instance.currentEnergy += Instance.baseEnergyPerRound;
 
         //water
-        currentWaterRemaining -= (currentPopulation * .1f) * currentWaterModifier;
-        if (currentWaterRemaining < 0)
+        Instance.currentWaterRemaining -= (Instance.currentPopulation * .1f) * Instance.currentWaterModifier;
+        if (Instance.currentWaterRemaining < 0)
         {
-            currentWaterRemaining = 0;
-            turnsWithoutWater++;
-            if (turnsWithoutWater == 2) currentPopulation *= .50f;
-            if (turnsWithoutWater == 4) currentPopulation = 0;
-            currentHappiness -= Mathf.Pow(.15f, 1 + turnsWithoutWater);
+            Instance.currentWaterRemaining = 0;
+            Instance.turnsWithoutWater++;
+            if (Instance.turnsWithoutWater == 2) Instance.currentPopulation *= .50f;
+            if (Instance.turnsWithoutWater == 4) Instance.currentPopulation = 0;
+            Instance.currentHappiness -= Mathf.Pow(.15f, 1 + Instance.turnsWithoutWater);
         }
 
         //food
-        currentFood -= currentPopulation;
-        if (currentFood < 0)
+        Instance.currentFood -= Instance.currentPopulation;
+        if (Instance.currentFood < 0)
         {
-            currentFood = 0;
-            turnsWithoutFood++;
-            currentHappiness -= .05f * (1 + turnsWithoutFood);
+            Instance.currentFood = 0;
+            Instance.turnsWithoutFood++;
+            Instance.currentHappiness -= .05f * (1 + Instance.turnsWithoutFood);
         }
 
         //overpopulation unhappiness
-        if (currentPopulation > 0) //currentHappiness -= Mathf.Clampf();
-            if (currentHappiness <= 0) currentEnergy *= .85f;
-        currentHappiness = Mathf.Clamp01(currentHappiness);
+        if (Instance.currentPopulation > 0) //currentHappiness -= Mathf.Clampf();
+            if (Instance.currentHappiness <= 0) Instance.currentEnergy *= .85f;
+        Instance.currentHappiness = Mathf.Clamp01(Instance.currentHappiness);
 
         //population increase
-        currentPopulation += currentPopulation * Random.Range(.3f, .6f);
+        Instance.currentPopulation += Instance.currentPopulation * Random.Range(.3f, .6f);
 
         //Debug.LogFormat("{0} {1} {2} {3} {4}", currentFood, currentHappiness, currentPopulation, currentEnergy, currentTurn);
         _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
 
-        if (currentPopulation <= 0 || currentSpaceShips >= 1)
+        if (Instance.currentPopulation <= 0 || Instance.currentSpaceShips >= 1)
         {
             _canvasUI.SetActive(false);
             _buildSystem.SetActive(false);

@@ -50,8 +50,10 @@ public class BuildTile : MonoBehaviour, IPointerDownHandler
     {
        
         var tempExist = gameObject.GetComponent<BasicBuilding>();
+       
         if (tempExist != null)
         {
+            tempExist.RemoveThis();
             DestroyImmediate(gameObject.GetComponent<BasicBuilding>());
         }
 
@@ -105,6 +107,7 @@ public class BuildTile : MonoBehaviour, IPointerDownHandler
                 break;
             case TileType.NoBuilding:
                 BuildType = TileType.NoBuilding;
+                building = null;
                 renderer.sprite = AssetManager.SpriteMap[TerrainType];
                 break;
             default:
