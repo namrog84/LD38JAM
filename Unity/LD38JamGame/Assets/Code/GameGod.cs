@@ -24,11 +24,11 @@ public class GameGod : MonoBehaviour
         Instance.currentPopulation = Instance.baseHappinessPerRound = 5;
         Instance.currentWaterModifier = 1;
         Instance.currentWaterRemaining = Instance.totalWorldWaterStart;
-        _uiManager.GetComponent<UIResourceManager>().UpdateStatus();
-        _canvasUI.SetActive(true);
+        Instance._uiManager.GetComponent<UIResourceManager>().UpdateStatus();
+        Instance._canvasUI.SetActive(true);
         Instance.TurnTickables = new List<ITurnInterface>();
     }
-    private static GameObject _canvasUI;
+    private GameObject _canvasUI;
     public List<TileInformation> GameBoard = new List<TileInformation>();
 
     private int _currentFocusTile = -1;
@@ -54,19 +54,31 @@ public class GameGod : MonoBehaviour
 
     public int currentSpaceShips;
 
+    public List<BuildTile> GetAdjacencyTiles(int id)
+    {
+        //north, south, east, west
+        var gb = Instance.GameBoard;
+        var _adjacencyList = new List<BuildTile>();
+        var tileInfo = new TileInformation[] { gb[gb[id].NorthId], gb[gb[id].EastId], gb[gb[id].SouthId], gb[gb[id].WestId] };
+        foreach (var tile in tileInfo)
+        {
+            _adjacencyList.Add(tile.GroundTileObject.GetComponent<BuildTile>());
+        }
+        return _adjacencyList;
+    }
 
 
     private bool _insufficientShow = false;
 
 
-    private static GameObject _uiManager;
+    private GameObject _uiManager;
     public void SetUIManager(GameObject g)
     {
         if (_uiManager != null) return;
         _uiManager = g;
     }
 
-    private static GameObject _buildSystem;
+    private GameObject _buildSystem;
     public void SetBuildSystem(GameObject g)
     {
         if (_buildSystem != null) return;

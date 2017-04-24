@@ -12,9 +12,16 @@ public class PowerLandController : BasicBuilding
 
     public float CalculateEnergy()
     {
-        //check neighbors/negatives
-        //bonuses etc..
-        return TileType.GetBaseResourcePerRound(TileType.DirtEnergy);
+        var _adjacency = GameGod.Instance.GetAdjacencyTiles(_id);
+        var _modifier = 1.0f;
+        foreach (var tile in _adjacency)
+        {
+            if (tile.BuildType == TileType.WaterEnergy || tile.BuildType == TileType.DirtEnergy)
+            {
+                _modifier += TileType.GetAdjacencyBonusModifier(TileType.DirtEnergy);
+            }
+        }
+        return TileType.GetBaseResourcePerRound(TileType.DirtEnergy) * _modifier;
     }
 
     public override void EndTurn()

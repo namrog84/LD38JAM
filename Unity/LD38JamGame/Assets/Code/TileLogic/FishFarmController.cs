@@ -12,7 +12,16 @@ public class FishFarmController : BasicBuilding
 
     private float CalculateFoodProduced()
     {
-        return TileType.GetBaseResourcePerRound(TileType.WaterFarm);
+        var _adjacency = GameGod.Instance.GetAdjacencyTiles(_id);
+        var _modifier = 1.0f;
+        foreach (var tile in _adjacency)
+        {
+            if (tile.BuildType == TileType.GrassFarm || tile.BuildType == TileType.WaterFarm)
+            {
+                _modifier += TileType.GetAdjacencyBonusModifier(TileType.WaterFarm);
+            }
+        }
+        return TileType.GetBaseResourcePerRound(TileType.WaterFarm) * _modifier;
     }
 
     public override void EndTurn()
