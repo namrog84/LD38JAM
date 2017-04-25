@@ -28,7 +28,7 @@ public class GameGod : MonoBehaviour
         Instance._uiManager.GetComponent<UIResourceManager>().UpdateStatus();
         Instance._canvasUI.SetActive(true);
         Instance.TurnTickables = new List<ITurnInterface>();
-        Instance.GameBoard = new List<TileInformation>();
+        //Instance.GameBoard = new List<TileInformation>();
     }
     private GameObject _canvasUI;
     public List<TileInformation> GameBoard = new List<TileInformation>();
@@ -225,20 +225,29 @@ public class GameGod : MonoBehaviour
         //food
         Instance.currentFood -= Instance.currentPopulation;
 
-        if (Instance.currentFood < 0)
+        if (Instance.currentFood <= 0)
         {
             Instance.currentFood = 0;
             Instance.turnsWithoutFood++;
             _happinessDelta -= .05f * (1 + Instance.turnsWithoutFood);
+
+            if(Instance.turnsWithoutFood > 5)
+            {
+                //everyone starve sto death
+                if (Instance.turnsWithoutFood >= 2) _currentPopulationDelta *= .50f;
+                if (Instance.turnsWithoutFood >= 4) _currentPopulationDelta = 0;
+            }
         }
 
+        //_currentPopulationDelta += Random.Range(.5f, 1.0f);
+
         //water
-        if (Instance.currentWaterRemaining < 0)
+        if (Instance.currentWaterRemaining <= 0)
         {
             Instance.currentWaterRemaining = 0;
             Instance.turnsWithoutWater++;
             if (Instance.turnsWithoutWater >= 2) _currentPopulationDelta *= .50f;
-            if (Instance.turnsWithoutWater == 4) _currentPopulationDelta = 0;
+            if (Instance.turnsWithoutWater >= 4) _currentPopulationDelta = 0;
             _happinessDelta -= Mathf.Pow(.15f, 1 + Instance.turnsWithoutWater);
         }
 
@@ -254,9 +263,8 @@ public class GameGod : MonoBehaviour
         Instance.currentHappiness = Mathf.Clamp01(Instance.currentHappiness);
         if (Instance.currentHappiness <= 0) Instance.currentEnergy *= .85f;
 
-        _currentPopulationDelta += Random.Range(.5f, 1.0f);
         var growpop = Mathf.Clamp(_currentPopulationDelta, 0.0f, 1.5f);
-        Debug.LogFormat("{0} population growth {1}", growpop, _currentPopulationDelta);
+        //Debug.LogFormat("{0} population growth {1}", growpop, _currentPopulationDelta);
         //final population tally
         Instance.currentPopulation *= growpop;
 

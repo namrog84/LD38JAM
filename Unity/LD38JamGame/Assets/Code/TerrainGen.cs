@@ -79,6 +79,7 @@ public class TerrainGen : MonoBehaviour
 
     public void InitializeTile(GameObject obj, int type, int x, int y)
     {
+        //GameGod.Instance.GameBoard = new List<TileInformation>();
         var GameBoard = GameGod.Instance.GameBoard;
         var tileObject = obj.GetComponent<BuildTile>();
         var newTileId = GameBoard.Count;
