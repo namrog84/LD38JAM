@@ -231,12 +231,14 @@ public class GameGod : MonoBehaviour
             Instance.turnsWithoutFood++;
             _happinessDelta -= .05f * (1 + Instance.turnsWithoutFood);
 
-            if(Instance.turnsWithoutFood > 5)
-            {
-                //everyone starve sto death
-                if (Instance.turnsWithoutFood >= 2) _currentPopulationDelta *= .50f;
-                if (Instance.turnsWithoutFood >= 4) _currentPopulationDelta = 0;
-            }
+            //everyone starve sto death
+            if (Instance.turnsWithoutFood >= 2) _currentPopulationDelta *= .70f;
+            if (Instance.turnsWithoutFood >= 5) _currentPopulationDelta = 0;
+        }
+        else
+        {
+            // yay people ate food
+            Instance.turnsWithoutFood = 0;
         }
 
         //_currentPopulationDelta += Random.Range(.5f, 1.0f);
