@@ -28,6 +28,7 @@ public class GameGod : MonoBehaviour
         Instance._uiManager.GetComponent<UIResourceManager>().UpdateStatus();
         Instance._canvasUI.SetActive(true);
         Instance.TurnTickables = new List<ITurnInterface>();
+        Instance.GameBoard = new List<TileInformation>();
     }
     private GameObject _canvasUI;
     public List<TileInformation> GameBoard = new List<TileInformation>();
@@ -242,6 +243,7 @@ public class GameGod : MonoBehaviour
         }
 
         Instance.currentWaterRemaining -= (Instance.currentPopulation * .07f) * Instance.currentWaterModifier;
+        Instance.currentWaterRemaining = Mathf.Clamp(Instance.currentWaterRemaining, 0, 100);
 
         //overpopulation unhappiness
         var imbalance = (int)(Instance.currentPopulation / Instance.populationPerHouse);

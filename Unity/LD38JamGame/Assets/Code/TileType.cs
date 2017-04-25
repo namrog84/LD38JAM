@@ -84,8 +84,8 @@ public class TileType
             case Water: return 0.0f;
 
             //food
-            case GrassFarm: return 10.0f;
-            case WaterFarm: return 8.0f;
+            case GrassFarm: return 12.0f;
+            case WaterFarm: return 10.0f;
 
             //water conservation
             case WaterConservation: return .03f;
